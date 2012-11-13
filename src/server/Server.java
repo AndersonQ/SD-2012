@@ -64,6 +64,6 @@ public class Server implements InterfaceAcesso, InterfaceReplicacao
         if(bst.contains(i))
             return h.get(i);
         else
-            throw new ObjetoNaoEncontradoException(link);
+            throw new ObjetoNaoEncontradoException(id);
     }
 }
