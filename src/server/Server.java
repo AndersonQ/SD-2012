@@ -54,7 +54,8 @@ public class Server implements InterfaceAcesso, InterfaceReplicacao
         Integer i;
 
         /*
-         * It splits the string link and get the part before "#".
+         * It splits the string link and get the part before "#"
+         * in other words, it gets the object ID.
          */
         id = link.split("#")[0];
 
