@@ -14,40 +14,10 @@ import controler.ObjetoNaoEncontradoException;
  *
  */
 
-public class Client implements InterfaceAcesso, InterfaceControlador
+public class Client
 {
-
-    public void armazena(String nome, Object obj) throws RemoteException,
-    NenhumServidorDisponivelException
+    public Client()
     {
-        // TODO Auto-generated method stub
-    }
 
-    public String procura(String nome) throws RemoteException,
-    NenhumServidorDisponivelException, ObjetoNaoEncontradoException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public String[] lista() throws RemoteException,
-    NenhumServidorDisponivelException
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    public void apaga(String nome) throws RemoteException,
-    NenhumServidorDisponivelException, ObjetoNaoEncontradoException
-    {
-        // TODO Auto-generated method stub
-
-    }
-
-    public Object recupera(String link) throws RemoteException,
-    ObjetoNaoEncontradoException
-    {
-        // TODO Auto-generated method stub
-        return null;
     }
 }
