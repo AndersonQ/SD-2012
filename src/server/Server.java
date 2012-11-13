@@ -50,7 +50,19 @@ public class Server implements InterfaceAcesso, InterfaceReplicacao
     public Object recupera(String link) throws RemoteException,
     ObjetoNaoEncontradoException
     {
-        // TODO Auto-generated method stub
-        return null;
+        String id;
+        Integer i;
+
+        /*
+         * It splits the string link and get the part before "#".
+         */
+        id = link.split("#")[1];
+
+        i = new Integer(id);
+
+        if(bst.contains(i))
+            return h.get(i);
+        else
+            throw new ObjetoNaoEncontradoException(link);
     }
 }
