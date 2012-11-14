@@ -6,12 +6,12 @@ import java.rmi.RemoteException;
 
 import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
+import sd.types.Box;
 
 public interface InterfaceReplicacao extends Remote
 {
-  void replica(int id, Object obj) 
+  void replica(Integer id, Box obj)
      throws RemoteException, NenhumServidorDisponivelException;
-  void apaga(int id) 
+  void apaga(Integer id)
      throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
-  
 }
