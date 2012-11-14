@@ -26,14 +26,13 @@ public class RunServer
             ia = s;
             ir = s;
             
-            Naming.rebind("rmi://localhostAcesso", ia);
-            Naming.rebind("rmi://localhostReplica", ir);
+            Naming.rebind("rmi://localhost/Acesso", ia);
+            Naming.rebind("rmi://localhost/Replica", ir);
         }
         catch(Exception e)
         {
             e.printStackTrace();
-            
         }
+        System.out.println("Running!");
     }
-
 }
