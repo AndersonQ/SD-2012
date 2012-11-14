@@ -6,6 +6,7 @@ import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 
 import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceReplicacao;
 import sd.types.Box;
 
@@ -47,6 +48,10 @@ public class Client
         try
         {
             ir.replica(10, new Box((Object) new String("Dez")));
+            ir.replica(20, new Box((Object) new String("Vinte")));
+            ir.replica(30, new Box((Object) new String("Trinta")));
+
+            ir.apaga(20);
         }
         catch (RemoteException e)
         {
@@ -54,6 +59,11 @@ public class Client
             e.printStackTrace();
         }
         catch (NenhumServidorDisponivelException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        catch (ObjetoNaoEncontradoException e)
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
