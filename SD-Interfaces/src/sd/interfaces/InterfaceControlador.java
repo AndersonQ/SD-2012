@@ -2,6 +2,9 @@ package sd.interfaces;
 
 import java.rmi.*;
 
+import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoNaoEncontradoException;
+
 public interface InterfaceControlador extends Remote
 {
   void armazena(String nome, Object obj) 

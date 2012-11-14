@@ -1,4 +1,4 @@
-package sd.interfaces;
+package sd.exceptions;
 
 @SuppressWarnings("serial")
 public class NenhumServidorDisponivelException extends Exception {
