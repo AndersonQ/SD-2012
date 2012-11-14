@@ -39,6 +39,7 @@ public class Server implements InterfaceAcesso, InterfaceReplicacao, Serializabl
 
         try
         {
+            System.out.printf("Received %s\n", obj.toString());
             System.out.printf("Received %s from %s\n", obj.toString(), RemoteServer.getClientHost());
         }
         catch (ServerNotActiveException e)
