@@ -1,11 +1,14 @@
-package server;
+package sd.server;
 
 import java.rmi.RemoteException;
 import java.util.Hashtable;
 import java.util.TreeSet;
 
-import controler.NenhumServidorDisponivelException;
-import controler.ObjetoNaoEncontradoException;
+import sd.interfaces.InterfaceAcesso;
+import sd.interfaces.InterfaceReplicacao;
+
+import sd.interfaces.NenhumServidorDisponivelException;
+import sd.interfaces.ObjetoNaoEncontradoException;
 
 /**
  * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br

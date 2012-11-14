@@ -1,9 +1,8 @@
-package server;
+package sd.interfaces;
 
-import java.rmi.*;
 
-import controler.NenhumServidorDisponivelException;
-import controler.ObjetoNaoEncontradoException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface InterfaceReplicacao extends Remote
 {

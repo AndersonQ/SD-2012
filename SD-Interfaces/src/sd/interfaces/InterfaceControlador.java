@@ -1,4 +1,4 @@
-package controler;
+package sd.interfaces;
 
 import java.rmi.*;
 

@@ -1,10 +1,4 @@
-package client;
-
-import java.rmi.RemoteException;
-import server.InterfaceAcesso;
-import controler.InterfaceControlador;
-import controler.NenhumServidorDisponivelException;
-import controler.ObjetoNaoEncontradoException;
+package sd.client;
 
 /**
  * 

@@ -1,7 +1,7 @@
-package server;
-import java.rmi.*;
+package sd.interfaces;
 
-import controler.ObjetoNaoEncontradoException;
+import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface InterfaceAcesso extends Remote
 {
