@@ -4,11 +4,10 @@ import java.rmi.RemoteException;
 import java.util.Hashtable;
 import java.util.TreeSet;
 
+import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceAcesso;
 import sd.interfaces.InterfaceReplicacao;
-
-import sd.interfaces.NenhumServidorDisponivelException;
-import sd.interfaces.ObjetoNaoEncontradoException;
 
 /**
  * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br
