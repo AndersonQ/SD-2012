@@ -1,0 +1,37 @@
+Como o projeto é dividido em várias partes (servidor, controlador e cliente)
+que devem ser executadas simultâneamente foi preciso dividir tudo em 4 projetos
+diferentes:
+
+SD-Client -> O cliente
+SD-Controler -> O controlador
+SD-Interfaces -> As intefaces e exceções que todos devem ter acesso
+SD-Server -> O servidor
+
+Para que todos os projetos consigam enxergar as interfaces
+eu coloquei elas em um .jar que todos os outros projetos
+adicionam como biblioteca externa. Esse .jar está
+em SD-Interfaces/jar e deve ser adicionado como classpath
+para o rmiregistry quando ele for executado.
+
+Para evitar problemas com endereços de arquivo
+e coisas do tipo eu não coloquei nenhum arquivo do
+Eclipse no git. Toda a descrição do que fazer
+para tudo funcionar o Eclipse está abaixo.
+
+ - Fechar o Eclipse;
+ - executar um git pull NOME_servidor_remoto master
+ - deletar todos os arquivos do Eclipse que estão dentro
+	de SD-2012. (se não me engano os arquivos são:
+	.settings/, .classpath, .project, bin/, src/
+ - Abrir o Eclipse e cirar novos projetos da seguinte forma:
+	Project Name: "SD-Client", Location: "YOUR_WORKSPACE/SD-2012/SD-Client"
+	Project Name: "SD-Controler", Location: "YOUR_WORKSPACE/SD-2012/SD-Controler"
+	Project Name: "SD-Interfaces", Location: "YOUR_WORKSPACE/SD-2012/SD-Interfaces"
+	Project Name: "SD-Server", Location: "YOUR_WORKSPACE/SD-2012/SD-Server"
+ - Para todos os projetos menos o SD-2012/SD-Interfaces
+	* Abir qualquer arquivo do projeto
+	* ir em Projetc->Proprieties->Java Build Path, aba libraries
+	  clicar em Add Extartnal JARs e selecionar o .jar que está em
+	  SD-2012/SD-Interfaces/jar
+
+Have fun :)
