@@ -3,6 +3,7 @@ package sd.server;
 import java.rmi.Naming;
 
 //import sd.interfaces.InterfaceAcesso;
+import sd.interfaces.InterfaceAcesso;
 import sd.interfaces.InterfaceReplicacao;
 
 /**
@@ -17,18 +18,19 @@ public class RunServer
 {
     public static void main(String[] args)
     {
-       // InterfaceAcesso ia;
+        InterfaceAcesso ia;
         InterfaceReplicacao ir;
-        Server s = new Server();
-        
+        Server s;
+
         System.out.println("Server object created");
         try
         {
-            //ia = s;
+            s = new Server();
+            ia = s;
             ir = s;
-            
-            //Naming.rebind("rmi://localhost/Acesso", ia);
+
             System.out.println("Binding " + s);
+            Naming.rebind("rmi://localhost/Acesso", ia);
             Naming.rebind("rmi://localhost/Replica", ir);
             System.out.println("Binded!");
         }
