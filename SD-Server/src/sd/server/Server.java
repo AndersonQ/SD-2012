@@ -1,6 +1,9 @@
 package sd.server;
 
+import java.io.Serializable;
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 import java.util.Hashtable;
 import java.util.TreeSet;
 
@@ -8,6 +11,7 @@ import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceAcesso;
 import sd.interfaces.InterfaceReplicacao;
+import sd.types.Box;
 
 /**
  * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br
@@ -15,41 +19,57 @@ import sd.interfaces.InterfaceReplicacao;
  * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br
  *
  */
-public class Server implements InterfaceAcesso, InterfaceReplicacao
+@SuppressWarnings("serial")
+public class Server implements InterfaceAcesso, InterfaceReplicacao, Serializable
 {
-    Hashtable<Integer, Object> h;
+    Hashtable<Integer, Box> h;
     TreeSet<Integer> bst;
 
     public Server()
     {
-        h = new Hashtable<Integer, Object>();
+        h = new Hashtable<Integer, Box>();
         bst = new TreeSet<Integer>();
     }
 
-    public void replica(int id, Object obj) throws RemoteException,
+    public void replica(Integer id, Box obj) throws RemoteException,
     NenhumServidorDisponivelException
     {
-        Integer i = new Integer(id);
+        h.put(id, obj);
+        bst.add(id);
 
-        h.put(i, obj);
-        bst.add(i);
-    }
-
-    public void apaga(int id) throws RemoteException,
-    NenhumServidorDisponivelException, ObjetoNaoEncontradoException
-    {
-        Integer i = new Integer(id);
-
-        if(! bst.contains(i))
-            throw new ObjetoNaoEncontradoException(i.toString());
-        else
+        try
         {
-            bst.remove(i);
-            h.remove(i);
+            System.out.printf("Received %s from %s\n", obj.toString(), RemoteServer.getClientHost());
+        }
+        catch (ServerNotActiveException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         }
     }
 
-    public Object recupera(String link) throws RemoteException,
+    public void apaga(Integer id) throws RemoteException,
+    NenhumServidorDisponivelException, ObjetoNaoEncontradoException
+    {
+        try
+        {
+            System.out.printf("%s asked to delete %s\n", RemoteServer.getClientHost(), id);
+        }
+        catch (ServerNotActiveException e)
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        if(! bst.contains(id))
+            throw new ObjetoNaoEncontradoException(id.toString());
+        else
+        {
+            bst.remove(id);
+            h.remove(id);
+        }
+    }
+
+    public Box recupera(String link) throws RemoteException,
     ObjetoNaoEncontradoException
     {
         String id;
@@ -64,7 +84,7 @@ public class Server implements InterfaceAcesso, InterfaceReplicacao
         i = new Integer(id);
 
         if(bst.contains(i))
-            return h.get(i);
+            return (Box) h.get(i);
         else
             throw new ObjetoNaoEncontradoException(id);
     }
