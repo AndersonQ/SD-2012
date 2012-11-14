@@ -1,9 +1,9 @@
 package sd.server;
 
-import java.io.Serializable;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
+import java.rmi.server.UnicastRemoteObject;
 import java.util.Hashtable;
 import java.util.TreeSet;
 
@@ -20,12 +20,12 @@ import sd.types.Box;
  *
  */
 @SuppressWarnings("serial")
-public class Server implements InterfaceAcesso, InterfaceReplicacao, Serializable
+public class Server extends UnicastRemoteObject implements InterfaceAcesso, InterfaceReplicacao
 {
     Hashtable<Integer, Box> h;
     TreeSet<Integer> bst;
 
-    public Server()
+    public Server() throws RemoteException
     {
         h = new Hashtable<Integer, Box>();
         bst = new TreeSet<Integer>();
