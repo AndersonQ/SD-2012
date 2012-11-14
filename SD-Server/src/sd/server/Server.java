@@ -39,7 +39,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
 
         try
         {
-            System.out.printf("Received %s\n", obj.toString());
             System.out.printf("Received %s from %s\n", obj.toString(), RemoteServer.getClientHost());
         }
         catch (ServerNotActiveException e)
@@ -67,6 +66,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         {
             bst.remove(id);
             h.remove(id);
+            System.out.printf("%s deleted!\n", id);
         }
     }
 
