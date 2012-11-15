@@ -1,3 +1,16 @@
 SD-Client/.classpath
 SD-Client/.project
 SD-Client/.settings/
+SD-Client/bin/
+SD-Controler/.classpath
+SD-Controler/.project
+SD-Controler/.settings/
+SD-Controler/bin/
+SD-Interfaces/.classpath
+SD-Interfaces/.project
+SD-Interfaces/.settings/
+SD-Interfaces/bin/
+SD-Server/.classpath
+SD-Server/.project
+SD-Server/.settings/
+SD-Server/bin/
