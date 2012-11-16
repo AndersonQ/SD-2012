@@ -18,7 +18,6 @@ public class Controler extends UnicastRemoteObject
     protected Controler() throws RemoteException
     {
         super();
-        // TODO Auto-generated constructor stub
     }
 
 }
