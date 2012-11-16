@@ -23,14 +23,21 @@ import sd.types.Box;
 public class Server extends UnicastRemoteObject implements InterfaceAcesso, InterfaceReplicacao
 {
 	/** Storage to objects */
-    Hashtable<Integer, Box> h;
+    private Hashtable<Integer, Box> h;
     /** Search tree to look for a element */
-    TreeSet<Integer> bst;
+    private TreeSet<Integer> bst;
+    /** To name servers */
+    private static int nextname = 0;
+    /** The server name */
+    private String name;
 
     public Server() throws RemoteException
     {
         h = new Hashtable<Integer, Box>();
         bst = new TreeSet<Integer>();
+        //TODO make it works
+        //this.name = new String(String.format("%d", nextname++));
+        this.name = "localhost";
     }
 
     public void replica(Integer id, Box obj) throws RemoteException,
@@ -91,4 +98,9 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         else
             throw new ObjetoNaoEncontradoException(id);
     }
+
+	@Override
+	public String getName() {
+		return name;
+	}
 }
