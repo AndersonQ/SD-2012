@@ -30,4 +30,10 @@ public interface InterfaceReplicacao extends Remote
 	 */
 	void apaga(Integer id)
 			throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
+	
+	/**
+	 * Get the name of this server
+	 * @return the name of the server
+	 */
+	String getName();
 }
