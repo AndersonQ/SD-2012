@@ -22,7 +22,9 @@ import sd.types.Box;
 @SuppressWarnings("serial")
 public class Server extends UnicastRemoteObject implements InterfaceAcesso, InterfaceReplicacao
 {
+	/** Storage to objects */
     Hashtable<Integer, Box> h;
+    /** Search tree to look for a element */
     TreeSet<Integer> bst;
 
     public Server() throws RemoteException
