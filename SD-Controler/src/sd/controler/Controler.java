@@ -19,7 +19,7 @@ import sd.types.Box;
  */
 
 @SuppressWarnings("serial")
-public class Controler extends UnicastRemoteObject implements InterfaceControlador, InterfaceReplicacao
+public class Controler extends UnicastRemoteObject implements InterfaceControlador
 {
 
     protected Controler() throws RemoteException
@@ -27,12 +27,12 @@ public class Controler extends UnicastRemoteObject implements InterfaceControlad
         super();
     }
 
-    //=======================Begin of interface Controller=======================
 	@Override
+	/**
+	 * Receive a object to store in all servers 
+	 */
 	public void armazena(String nome, Box obj) throws RemoteException,
 			NenhumServidorDisponivelException {
-		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
@@ -55,23 +55,4 @@ public class Controler extends UnicastRemoteObject implements InterfaceControlad
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public void apaga(Integer arg0) throws RemoteException,
-			NenhumServidorDisponivelException, ObjetoNaoEncontradoException {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	//=======================End of interface Controller=======================
-
-	//=======================Begin of interface Replication=======================
-	@Override
-	public void replica(Integer arg0, Box arg1) throws RemoteException,
-			NenhumServidorDisponivelException {
-		// TODO Auto-generated method stub
-		
-	}
-	//=======================End of interface Replication=======================
-
 }
