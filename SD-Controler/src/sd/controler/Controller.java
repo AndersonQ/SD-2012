@@ -22,7 +22,7 @@ import sd.types.Box;
  */
 
 @SuppressWarnings("serial")
-public class Controler extends UnicastRemoteObject implements InterfaceControlador
+public class Controller extends UnicastRemoteObject implements InterfaceControlador
 {
 	/** The servers */
 	private Vector<InterfaceReplicacao> servers;
@@ -33,7 +33,7 @@ public class Controler extends UnicastRemoteObject implements InterfaceControlad
 	/** The last object ID */
 	private static int ID;
 
-    protected Controler() throws RemoteException
+    protected Controller() throws RemoteException
     {
     	//Calls super class
         super();
@@ -42,7 +42,7 @@ public class Controler extends UnicastRemoteObject implements InterfaceControlad
         this.servers = new Vector<InterfaceReplicacao>();
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
-        Controler.ID = 0;
+        Controller.ID = 0;
     }
 
     //===================Begin interface Controller===================
