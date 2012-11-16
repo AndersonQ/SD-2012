@@ -17,3 +17,4 @@ SD-Server/bin/
 .classpath
 .project
 .settings/
+*.backup
