@@ -10,6 +10,7 @@ import java.util.Vector;
 import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceControlador;
+import sd.interfaces.InterfaceControllerServer;
 import sd.interfaces.InterfaceReplicacao;
 import sd.types.Box;
 
@@ -22,7 +23,7 @@ import sd.types.Box;
  */
 
 @SuppressWarnings("serial")
-public class Controller extends UnicastRemoteObject implements InterfaceControlador
+public class Controller extends UnicastRemoteObject implements InterfaceControlador, InterfaceControllerServer
 {
 	/** The servers */
 	private Vector<InterfaceReplicacao> servers;
@@ -30,8 +31,10 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
 	private Hashtable<String, Integer> objects;
 	/** The next server to be used */
 	int nextserver;
-	/** The last object ID */
+	/** The next object ID */
 	private static int ID;
+	/** The next server ID */
+	private static int serverID;
 
     protected Controller() throws RemoteException
     {
@@ -43,6 +46,7 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
         Controller.ID = 0;
+        Controller.serverID = 0;
     }
 
     //===================Begin interface Controller===================
@@ -150,6 +154,23 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
 	}
 	//===================End interface Controller=====================
 	
+
+	//===================Begin interface ControllerServer===================
+	@Override
+	/**
+	 * Ask to connect to controller sending ServerName receiving  ServiceName 
+	 * to build this tuple {object_id, server, service} with this syntax: ID@rmi://SERVER_NAME/SERVICE_NAME
+	 * @param name the name of the server 
+	 * @return the name of service to this server or null if its fail
+	 */
+	public String beforeConect(String name) {
+		/*The ID to this server, it will compose the serviceName, like this:
+		 * ServiceID
+		 */
+		return String.format("%d",nextServerID());
+	}
+	//===================End interface ControllerServer=====================
+	
 	/**
 	 * Gets the server to be informed to the client
 	 * @return
@@ -157,5 +178,14 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
 	private String nextServer()
 	{
 		return servers.get(nextserver % servers.size()).getName();
+	}
+	
+	private int nextServerID()
+	{
+		//TODO verify if 'return Controller.serverID' works
+		int id = Controller.serverID;
+		Controller.serverID = Controller.serverID + 1;
+		
+		return id;
 	}
 }
