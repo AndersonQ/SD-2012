@@ -1,6 +1,7 @@
 package sd.interfaces;
 
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 public interface InterfaceControllerServer extends Remote {
 
@@ -13,5 +14,6 @@ public interface InterfaceControllerServer extends Remote {
 	 * @param service name of the service
 	 * @return the ID of this server or -1 if its fail
 	 */
-	int beforeConect(String name);
+	int beforeConect(String name)
+			 throws RemoteException;
 }

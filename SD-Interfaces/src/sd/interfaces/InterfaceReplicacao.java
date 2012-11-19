@@ -35,5 +35,6 @@ public interface InterfaceReplicacao extends Remote
 	 * Get the name of this server
 	 * @return the name of the server
 	 */
-	String getName();
+	String getName()
+			throws RemoteException;
 }
