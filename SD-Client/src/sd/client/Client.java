@@ -30,17 +30,22 @@ public class Client
         }
         catch (MalformedURLException e)
         {
-            // TODO Auto-generated catch block
+        	System.out.println("MalformedURLException");
             e.printStackTrace();
         }
         catch (RemoteException e)
         {
-            // TODO Auto-generated catch block
+        	System.out.println("RemoteException");
             e.printStackTrace();
         }
         catch (NotBoundException e)
         {
-            // TODO Auto-generated catch block
+        	System.out.println("NotBoundException");
+            e.printStackTrace();
+        }
+        catch (Exception e)
+        {
+        	System.out.println("Other Exception");
             e.printStackTrace();
         }
         System.out.println("Conected!");
