@@ -6,14 +6,19 @@ import java.rmi.RemoteException;
 public interface InterfaceControllerServer extends Remote {
 
 	/**
-	 * Ask to connect to controller sending ServerName 
-	 * to build this tuple {object_id, server, service} with this syntax: 
-	 * ID@rmi://SERVER_NAME/SERVICE_NAME
-	 * the service name is SEVERID, and ID will be returned
-	 * @param name the name of the server 
-	 * @param service name of the service
+	 * Ask to controller a ID to compose the service name, like it: serviceID
 	 * @return the ID of this server or -1 if its fail
 	 */
-	int beforeConect(String name)
+	int beforeBind()
 			 throws RemoteException;
+	
+	/**
+	 * Send to controller the server address and service name
+	 * @param addres the server address
+	 * @param service the service name
+	 * @return true if the controller added the server or false other wise
+	 * @throws RemoteException
+	 */
+	boolean conect(String addres, String service)
+			throws RemoteException;
 }
