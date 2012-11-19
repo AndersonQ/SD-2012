@@ -16,7 +16,7 @@ public class RunController {
         try
         {
         	ic = new Controller();
-            System.out.println("Binding controller" + ic);
+            System.out.println("Binding controller " + ic);
             Naming.rebind("rmi://localhost/Controller", ic);
             System.out.println("Controller Binded!");
         }
