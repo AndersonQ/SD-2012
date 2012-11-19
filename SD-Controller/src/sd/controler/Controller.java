@@ -23,7 +23,8 @@ import sd.types.Box;
  */
 
 @SuppressWarnings("serial")
-public class Controller extends UnicastRemoteObject implements InterfaceControlador, InterfaceControllerServer
+public class Controller extends UnicastRemoteObject 
+						implements InterfaceControlador, InterfaceControllerServer
 {
 	/** The servers */
 	private Vector<InterfaceReplicacao> servers;
@@ -66,13 +67,13 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
 		objects.put(nome, new Integer(id));
 		
 		//Store object in all servers
-		//TODO store the object in the servers
-		/*for(InterfaceReplicacao ir: servers)
+		//TODO TEST IT!!!!
+		for(InterfaceReplicacao ir: servers)
 		{
 			ir.replica(id, new Box(obj));
 			//DEBUG
 			System.out.println("Stored " + obj + ", id " + id + " in server " + ir);
-		}*/
+		}
 	}
 
 	@Override
@@ -158,24 +159,40 @@ public class Controller extends UnicastRemoteObject implements InterfaceControla
 	//===================Begin interface ControllerServer===================
 	@Override
 	/**
-	 * Ask to connect to controller sending ServerName receiving  ServiceName 
-	 * to build this tuple {object_id, server, service} with this syntax: ID@rmi://SERVER_NAME/SERVICE_NAME
-	 * @param name the name of the server 
-	 * @return the name of service to this server or null if its fail
+	 * Ask to controller a ID to compose the service name, like it: serviceID
+	 * @return the ID of this server or -1 if its fail
 	 */
-	public String beforeConect(String name) {
+	public int beforeBind() throws RemoteException
+	{
 		/*The ID to this server, it will compose the serviceName, like this:
 		 * ServiceID
 		 */
-		return String.format("%d",nextServerID());
+		System.out.println("Controller: beforeConect");
+		return nextServerID();
+	}
+	
+	@Override
+	/**
+	 * Send to controller the server address and service name
+	 * @param addres the server address
+	 * @param service the service name
+	 * @return true if the controller added the server or false other wise
+	 * @throws RemoteException
+	 */
+	public boolean conect(String addres, String service) throws RemoteException
+	{
+		System.out.println("Controller.conect received addres: " + 
+							addres + " and service: " + service);
+		return true;
 	}
 	//===================End interface ControllerServer=====================
 	
 	/**
 	 * Gets the server to be informed to the client
 	 * @return
+	 * @throws RemoteException 
 	 */
-	private String nextServer()
+	private String nextServer() throws RemoteException
 	{
 		return servers.get(nextserver % servers.size()).getName();
 	}
