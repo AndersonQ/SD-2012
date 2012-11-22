@@ -26,8 +26,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     private Hashtable<Integer, Box> h;
     /** Search tree to look for a element */
     private TreeSet<Integer> bst;
-    /** To name servers */
-    private static int nextname = 0;
     /** The server name */
     private String name;
 
@@ -35,8 +33,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     {
         h = new Hashtable<Integer, Box>();
         bst = new TreeSet<Integer>();
-        //TODO make it works
-        //this.name = new String(String.format("%d", nextname++));
         this.name = "localhost";
     }
 
