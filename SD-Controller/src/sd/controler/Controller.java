@@ -41,7 +41,7 @@ public class Controller extends UnicastRemoteObject
     {
     	//Calls super class
         super();
-        
+
         //Initialising variables
         this.servers = new Vector<InterfaceReplicacao>();
         this.objects = new Hashtable<String, Integer>();
@@ -51,7 +51,7 @@ public class Controller extends UnicastRemoteObject
     }
 
     //===================Begin interface Controller===================
-	@Override
+
 	/**
 	 * Stores a object in all servers
 	 * @param nome The name of the object
@@ -65,7 +65,7 @@ public class Controller extends UnicastRemoteObject
 		Integer id = new Integer(ID++);
 		//Put the object in the list
 		objects.put(nome, new Integer(id));
-		
+
 		//Store object in all servers
 		//TODO TEST IT!!!!
 		for(InterfaceReplicacao ir: servers)
@@ -76,7 +76,6 @@ public class Controller extends UnicastRemoteObject
 		}
 	}
 
-	@Override
 	/**
 	 * Look for a object
 	 * @param nome name of the object
@@ -93,17 +92,14 @@ public class Controller extends UnicastRemoteObject
 		//Looking for the object
 		Integer id = objects.get(nome);
 		InterfaceReplicacao s = servers.get(id);
-		
+
 		//If there is not a object named nome, it throws exception
 		if(id == null)
-		{
 			throw new ObjetoNaoEncontradoException(nome);
-		}
-		
+
 		return String.format("%d@rmi://%s/%s", id, nextServer(), nome);
 	}
 
-	@Override
 	/**
 	 * List all stored objects
 	 * TODO define syntax to string
@@ -115,9 +111,9 @@ public class Controller extends UnicastRemoteObject
 			NenhumServidorDisponivelException
 	{
 		ArrayList<String> list = new ArrayList<String>();
-		
+
 		Set<String> objs = objects.keySet();
-		
+
 		//Add all object names into 'list'
 		for(String s: objs)
 		{
@@ -127,7 +123,6 @@ public class Controller extends UnicastRemoteObject
 		return list;
 	}
 
-	@Override
 	/**
 	 * Delete an object
 	 * @param nome the name of the object to be deleted
@@ -140,13 +135,13 @@ public class Controller extends UnicastRemoteObject
 	{
 		//Delete object to the object list
 		Integer id = objects.remove(nome);
-		
+
 		//If there is not a object named nome, it throws exception
 		if(id == null)
 		{
 			throw new ObjetoNaoEncontradoException(nome);
 		}
-		
+
 		//Delete the object from each server
 		for(InterfaceReplicacao s: servers)
 		{
@@ -154,10 +149,10 @@ public class Controller extends UnicastRemoteObject
 		}
 	}
 	//===================End interface Controller=====================
-	
+
 
 	//===================Begin interface ControllerServer===================
-	@Override
+
 	/**
 	 * Ask to controller a ID to compose the service name, like it: serviceID
 	 * @return the ID of this server or -1 if its fail
@@ -170,8 +165,7 @@ public class Controller extends UnicastRemoteObject
 		System.out.println("Controller: beforeConect");
 		return nextServerID();
 	}
-	
-	@Override
+
 	/**
 	 * Send to controller the server address and service name
 	 * @param addres the server address
@@ -186,7 +180,7 @@ public class Controller extends UnicastRemoteObject
 		return true;
 	}
 	//===================End interface ControllerServer=====================
-	
+
 	/**
 	 * Gets the server to be informed to the client
 	 * @return
@@ -196,13 +190,13 @@ public class Controller extends UnicastRemoteObject
 	{
 		return servers.get(nextserver % servers.size()).getName();
 	}
-	
+
 	private int nextServerID()
 	{
 		//TODO verify if 'return Controller.serverID' works
 		int id = Controller.serverID;
 		Controller.serverID = Controller.serverID + 1;
-		
+
 		return id;
 	}
 }
