@@ -30,7 +30,7 @@ public class Controller extends UnicastRemoteObject
 	private Vector<InterfaceReplicacao> servers;
 	/** A 'list' of all stored objects */
 	private Hashtable<String, Integer> objects;
-	/** The next server to be used */
+	/** The next server to be used by clients */
 	int nextserver;
 	/** The next object ID */
 	private static int ID;
@@ -62,6 +62,7 @@ public class Controller extends UnicastRemoteObject
 	public void armazena(String nome, Box obj) throws RemoteException,
 			NenhumServidorDisponivelException 
 	{
+		//TODO see if this object already exist
 		Integer id = new Integer(ID++);
 		//Put the object in the list
 		objects.put(nome, new Integer(id));
@@ -70,7 +71,7 @@ public class Controller extends UnicastRemoteObject
 		//TODO TEST IT!!!!
 		for(InterfaceReplicacao ir: servers)
 		{
-			ir.replica(id, new Box(obj));
+			ir.replica(id, obj);
 			//DEBUG
 			System.out.println("Stored " + obj + ", id " + id + " in server " + ir);
 		}
@@ -92,15 +93,15 @@ public class Controller extends UnicastRemoteObject
 	{
 		//Looking for the object
 		Integer id = objects.get(nome);
-		InterfaceReplicacao s = servers.get(id);
-		
+				
 		//If there is not a object named nome, it throws exception
 		if(id == null)
 		{
 			throw new ObjetoNaoEncontradoException(nome);
 		}
 		
-		return String.format("%d@rmi://%s/%s", id, nextServer(), nome);
+		//TODO fix it!!!!!
+		return String.format("%d@rmi://%s/%s", id.intValue(), nextServer(), nome);
 	}
 
 	@Override
@@ -181,6 +182,7 @@ public class Controller extends UnicastRemoteObject
 	 */
 	public boolean conect(String addres, String service) throws RemoteException
 	{
+		//TODO do all things
 		System.out.println("Controller.conect received addres: " + 
 							addres + " and service: " + service);
 		return true;
@@ -197,6 +199,10 @@ public class Controller extends UnicastRemoteObject
 		return servers.get(nextserver % servers.size()).getName();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	private int nextServerID()
 	{
 		//TODO verify if 'return Controller.serverID' works
