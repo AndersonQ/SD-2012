@@ -23,6 +23,7 @@ public class RunController {
         catch(Exception e)
         {
             e.printStackTrace();
+            System.exit(1);
         }
         System.out.println("Controller Running!");
     }
