@@ -79,28 +79,18 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
     }
 
-    public Box recupera(String link) throws RemoteException,
+    public Box recupera(Integer id) throws RemoteException,
     ObjetoNaoEncontradoException
     {
-        String id;
-        Integer i;
-
-        /*
-         * It splits the string link and get the part before "#"
-         * in other words, it gets the object ID.
-         */
-        id = link.split("#")[0];
-
-        i = new Integer(id);
-
-        if(bst.contains(i))
-            return (Box) h.get(i);
+        if(bst.contains(id))
+            return (Box) h.get(id);
         else
-            throw new ObjetoNaoEncontradoException(id);
+            throw new ObjetoNaoEncontradoException(id.toString());
     }
 
 	@Override
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 }
