@@ -22,9 +22,14 @@ public class RunServer
 {
     public static void main(String[] args) throws RemoteException
     {
+    	//It servers this
         InterfaceAcesso ia;
         InterfaceReplicacao ir;
+        
+        //It uses this
         InterfaceControllerServer ics = null;
+        
+        //Me!!!!
         Server s;
 
         System.out.println("Server object created");
@@ -52,22 +57,22 @@ public class RunServer
         }
         catch (MalformedURLException e)
         {
-        	System.out.println("MalformedURLException");
+        	System.err.println("MalformedURLException");
             e.printStackTrace();
         }
         catch (RemoteException e)
         {
-        	System.out.println("RemoteException");
+        	System.err.println("RemoteException");
             e.printStackTrace();
         }
         catch (NotBoundException e)
         {
-        	System.out.println("NotBoundException");
+        	System.err.println("NotBoundException");
             e.printStackTrace();
         }
         catch (Exception e)
         {
-        	System.out.println("Other Exception");
+        	System.err.println("Other Exception");
             e.printStackTrace();
         }
         System.out.println("Server Conected to Controller!");
