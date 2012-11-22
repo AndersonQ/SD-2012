@@ -24,32 +24,38 @@ public class Client
     {
         InterfaceReplicacao ir = null;
 
+        /* Connect to the Server */
         try
         {
             ir = (InterfaceReplicacao) Naming.lookup("rmi://localhost/Replica");
         }
         catch (MalformedURLException e)
         {
-        	System.out.println("MalformedURLException");
+            System.out.println("MalformedURLException");
             e.printStackTrace();
         }
         catch (RemoteException e)
         {
-        	System.out.println("RemoteException");
+            System.out.println("RemoteException");
             e.printStackTrace();
         }
         catch (NotBoundException e)
         {
-        	System.out.println("NotBoundException");
+            System.out.println("NotBoundException");
             e.printStackTrace();
         }
         catch (Exception e)
         {
-        	System.out.println("Other Exception");
+            System.out.println("Other Exception");
             e.printStackTrace();
         }
+
         System.out.println("Conected!");
 
+        /*
+         * Create objects, box them and
+         * send to server store it.
+         */
         try
         {
             ir.replica(10, new Box((Object) new String("Dez")));
