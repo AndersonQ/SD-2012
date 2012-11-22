@@ -8,6 +8,6 @@ import sd.types.Box;
 
 public interface InterfaceAcesso extends Remote
 {
-    Box recupera(String link)
+    Box recupera(Integer id)
             throws RemoteException, ObjetoNaoEncontradoException;
 }
