@@ -53,7 +53,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
     }
 
-    public void apaga(Integer id) throws RemoteException,
+    public void intReplicacaoApaga(Integer id) throws RemoteException,
     NenhumServidorDisponivelException, ObjetoNaoEncontradoException
     {
         try

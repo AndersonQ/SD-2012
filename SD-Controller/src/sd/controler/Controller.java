@@ -134,7 +134,7 @@ public class Controller extends UnicastRemoteObject
 	 * @throws NenhumServidorDisponivelException There are NOT any available server
 	 * @throws ObjetoNaoEncontradoException Object not found
 	 */
-	public void apaga(String nome) throws RemoteException,
+	public void intControladorApaga(String nome) throws RemoteException,
 			NenhumServidorDisponivelException, ObjetoNaoEncontradoException
 	{
 		//Delete object to the object list
@@ -149,7 +149,7 @@ public class Controller extends UnicastRemoteObject
 		//Delete the object from each server
 		for(InterfaceReplicacao s: servers)
 		{
-			s.apaga(id);
+			s.intReplicacaoApaga(id);
 		}
 	}
 	//===================End interface Controller=====================

@@ -62,7 +62,7 @@ public class Client
             ir.replica(20, new Box((Object) new String("Vinte")));
             ir.replica(30, new Box((Object) new String("Trinta")));
 
-            ir.apaga(20);
+            ir.intReplicacaoApaga(20);
         }
         catch (RemoteException e)
         {
