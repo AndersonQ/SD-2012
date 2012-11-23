@@ -28,13 +28,12 @@ public interface InterfaceReplicacao extends Remote
 	 * @throws NenhumServidorDisponivelException There are NOT any available server
 	 * @throws ObjetoNaoEncontradoException Object not found
 	 */
-	void apaga(Integer id)
+	void intReplicacaoApaga(Integer id)
 			throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
 	
 	/**
 	 * Get the name of this server
 	 * @return the name of the server
 	 */
-	String getName()
-			throws RemoteException;
+	String getName() throws RemoteException;
 }

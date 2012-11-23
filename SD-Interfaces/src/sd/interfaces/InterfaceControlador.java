@@ -49,6 +49,6 @@ public interface InterfaceControlador extends Remote
 	 * @throws NenhumServidorDisponivelException There are NOT any available server
 	 * @throws ObjetoNaoEncontradoException Object not found
 	 */
-	void apaga(String nome)
+	void intControladorApaga(String nome)
 			throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
 }
