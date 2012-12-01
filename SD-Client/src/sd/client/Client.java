@@ -4,9 +4,14 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
+import sd.interfaces.InterfaceAcesso;
+import sd.interfaces.InterfaceControlador;
+import sd.interfaces.InterfaceControllerServer;
 import sd.interfaces.InterfaceReplicacao;
 import sd.types.Box;
 
@@ -22,12 +27,13 @@ public class Client
 {
     public static void main(String[] trash)
     {
-        InterfaceReplicacao ir = null;
+        InterfaceAcesso ia_cliente = null;
+        InterfaceControlador ic_cliente= null;
 
-        /* Connect to the Server */
+        /* Connect to the Controller */
         try
         {
-            ir = (InterfaceReplicacao) Naming.lookup("rmi://localhost/Replica");
+            ic_cliente = (InterfaceControlador) Naming.lookup("rmi://localhost/Controller");
         }
         catch (MalformedURLException e)
         {
@@ -49,20 +55,22 @@ public class Client
             System.out.println("Other Exception");
             e.printStackTrace();
         }
-
-        System.out.println("Conected!");
-
+        try{
+        System.out.println(ic_cliente.Connection_cliente_OK());
+        }
+        catch (RemoteException e)
+        {
+            System.out.println("RemoteException");
+            e.printStackTrace();
+        }
         /*
          * Create objects, box them and
          * send to server store it.
          */
         try
         {
-            ir.replica(10, new Box((Object) new String("Dez")));
-            ir.replica(20, new Box((Object) new String("Vinte")));
-            ir.replica(30, new Box((Object) new String("Trinta")));
-
-            ir.intReplicacaoApaga(20);
+        	ic_cliente.armazena("Dez", new Box((Object) new String("Dez")));
+        	ic_cliente.armazena("Vinte", new Box((Object) new String("Vinte")));
         }
         catch (RemoteException e)
         {
@@ -74,10 +82,6 @@ public class Client
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        catch (ObjetoNaoEncontradoException e)
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
     }
+
 }

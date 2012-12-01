@@ -51,4 +51,10 @@ public interface InterfaceControlador extends Remote
 	 */
 	void intControladorApaga(String nome)
 			throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
+	/**
+	 * Escreve uma mensagem na tela do controlador e do Cliente, confirmando conexão
+	 * @return Sting - Mensagem de conexão ok.
+	 * @throws RemoteException Por que Deus quer assim
+	 */
+	public String Connection_cliente_OK() throws RemoteException;
 }
