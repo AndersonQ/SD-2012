@@ -49,8 +49,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     	this.ID = id;
     }
 
-    public void replica(Integer id, Box obj) throws RemoteException,
-    NenhumServidorDisponivelException
+    public void replica(Integer id, Box obj) throws RemoteException, NenhumServidorDisponivelException
     {
         h.put(id, obj);
         bst.add(id);
@@ -61,7 +60,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
         catch (ServerNotActiveException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -75,7 +73,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
         catch (ServerNotActiveException e)
         {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         if(! bst.contains(id))
