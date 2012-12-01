@@ -12,7 +12,7 @@ public class RunController {
 	public static void main(String[] args) {
         InterfaceControlador ic;
         
-        System.out.println("Server object created");
+        System.out.println("Controller object created");
         try
         {
         	ic = new Controller();
