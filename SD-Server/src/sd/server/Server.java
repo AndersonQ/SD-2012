@@ -24,8 +24,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
 {
 	/** Storage to objects */
     private Hashtable<Integer, Box> h;
-    /** Search tree to look for a element */
-    private TreeSet<Integer> bst;
     /** The server address */
     private String address;
     /** The server ID */
@@ -34,7 +32,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     public Server() throws RemoteException
     {
         h = new Hashtable<Integer, Box>();
-        bst = new TreeSet<Integer>();
 
         //Default address
         this.address = "localhost";
@@ -43,20 +40,19 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     public Server(String address, int id) throws RemoteException
     {
         h = new Hashtable<Integer, Box>();
-        bst = new TreeSet<Integer>();
     	
     	this.address = address;
     	this.ID = id;
     }
 
+    @Override
     public void replica(Integer id, Box obj) throws RemoteException, NenhumServidorDisponivelException
     {
         h.put(id, obj);
-        bst.add(id);
 
         try
         {
-            System.out.printf("Received %s from %s\n", obj.toString(), RemoteServer.getClientHost());
+            System.out.printf("Received object %s from %s\n", obj.toString(), RemoteServer.getClientHost());
         }
         catch (ServerNotActiveException e)
         {
@@ -64,45 +60,52 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
     }
 
-    public void intReplicacaoApaga(Integer id) throws RemoteException,
-    NenhumServidorDisponivelException, ObjetoNaoEncontradoException
+    public void intReplicacaoApaga(Integer id) throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException
     {
         try
         {
-            System.out.printf("%s asked to delete %s\n", RemoteServer.getClientHost(), id);
+            System.out.printf("Client %s asked to delete %s\n", RemoteServer.getClientHost(), id);
         }
         catch (ServerNotActiveException e)
         {
             e.printStackTrace();
         }
-        if(! bst.contains(id))
+        if(h.get(id) == null)
+        {
             throw new ObjetoNaoEncontradoException(id.toString());
+        }
         else
         {
-            bst.remove(id);
             h.remove(id);
-            System.out.printf("%s deleted!\n", id);
+            System.out.printf("Object %s deleted!\n", id);
         }
     }
 
     public Box recupera(Integer id) throws RemoteException,
     ObjetoNaoEncontradoException
     {
-        if(bst.contains(id))
-            return (Box) h.get(id);
-        else
+    	Box box = h.get(id);
+    	
+    	//If there is a object in box, return it, other wise throws a exception
+        if(box != null)
+        {
+            return box;
+        }
+        else //throws a exception
+        {
             throw new ObjetoNaoEncontradoException(id.toString());
+        }
     }
 
 	@Override
-	public String getAddress() throws RemoteException {
-		
+	public String getAddress() throws RemoteException
+	{	
 		return this.address;
 	}
 
 	@Override
-	public int getId() throws RemoteException {
-		
+	public int getId() throws RemoteException
+	{	
 		return this.ID;
 	}
 }
