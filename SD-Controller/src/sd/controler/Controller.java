@@ -179,7 +179,8 @@ public class Controller extends UnicastRemoteObject
 	 */
 	public int beforeBind() throws RemoteException
 	{
-		/*The ID to this server, it will compose the serviceName, like this:
+		/*
+		 * The ID to this server, it will compose the serviceName, like this:
 		 * ServiceID
 		 */
 		return nextServerID();
