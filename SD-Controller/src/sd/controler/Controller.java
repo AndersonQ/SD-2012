@@ -129,7 +129,7 @@ public class Controller extends UnicastRemoteObject
 	
 	public String Connection_cliente_OK() throws RemoteException
 	{
-		String s ="Cliente conectado com sucesso";
+		String s ="Conexão Cliente-Controlador OK";
 		System.out.println(s);
 		return s;
 	}

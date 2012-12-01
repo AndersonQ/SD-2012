@@ -29,7 +29,7 @@ public class Client
     {
         InterfaceAcesso ia_cliente = null;
         InterfaceControlador ic_cliente= null;
-
+        ArrayList<String> ALS = null;
         /* Connect to the Controller */
         try
         {
@@ -71,6 +71,12 @@ public class Client
         {
         	ic_cliente.armazena("Dez", new Box((Object) new String("Dez")));
         	ic_cliente.armazena("Vinte", new Box((Object) new String("Vinte")));
+        	ic_cliente.armazena("Trinta", new Box((Object) new String("Trinta")));
+        	ic_cliente.armazena("Quarenta", new Box((Object) new String("Quarenta")));
+        	ALS = ic_cliente.lista();
+        	for (String nome: ALS)
+        		System.out.println(nome);
+        	
         }
         catch (RemoteException e)
         {
