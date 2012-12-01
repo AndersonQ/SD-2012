@@ -26,14 +26,27 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     private Hashtable<Integer, Box> h;
     /** Search tree to look for a element */
     private TreeSet<Integer> bst;
-    /** The server name */
-    private String name;
+    /** The server address */
+    private String address;
+    /** The server ID */
+    private int ID;
 
     public Server() throws RemoteException
     {
         h = new Hashtable<Integer, Box>();
         bst = new TreeSet<Integer>();
-        this.name = "localhost";
+
+        //Default address
+        this.address = "localhost";
+    }
+    
+    public Server(String address, int id) throws RemoteException
+    {
+        h = new Hashtable<Integer, Box>();
+        bst = new TreeSet<Integer>();
+    	
+    	this.address = address;
+    	this.ID = id;
     }
 
     public void replica(Integer id, Box obj) throws RemoteException,
@@ -85,8 +98,14 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     }
 
 	@Override
-	public String getName()
-	{
-		return name;
+	public String getAddress() throws RemoteException {
+		
+		return this.address;
+	}
+
+	@Override
+	public int getId() throws RemoteException {
+		
+		return this.ID;
 	}
 }
