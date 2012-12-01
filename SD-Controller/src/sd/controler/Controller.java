@@ -126,6 +126,14 @@ public class Controller extends UnicastRemoteObject
 
 		return list;
 	}
+	
+	public String Connection_cliente_OK() throws RemoteException
+	{
+		String s ="Cliente conectado com sucesso";
+		System.out.println(s);
+		return s;
+	}
+	
 
 	/**
 	 * Delete an object
