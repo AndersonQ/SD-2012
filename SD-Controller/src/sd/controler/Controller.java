@@ -1,5 +1,8 @@
 package sd.controler;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
@@ -179,7 +182,6 @@ public class Controller extends UnicastRemoteObject
 		/*The ID to this server, it will compose the serviceName, like this:
 		 * ServiceID
 		 */
-		System.out.println("Controller: beforeConect");
 		return nextServerID();
 	}
 
@@ -191,12 +193,37 @@ public class Controller extends UnicastRemoteObject
 	 * @return true if the controller added the server or false other wise
 	 * @throws RemoteException
 	 */
-	public boolean registryServer(String addres, int id) throws RemoteException
+	public boolean registryServer(String address, int id) throws RemoteException
 	{
-		//TODO do all things
-		System.out.println("Controller.registryServer received addres: " + 
-							addres + ", id: " + id);
-		return true;
+		//Was the server registered?
+		boolean registered = true;
+		//New server
+		InterfaceReplicacao newserver = null;
+		
+		//Looking for the new server
+		try
+		{
+			newserver = (InterfaceReplicacao) Naming.lookup(String.format("rmi://%s/Replica%d", address, id));
+		}
+		catch (MalformedURLException e)
+		{
+			registered = false;
+			System.err.println("MalformedURLException");
+			e.printStackTrace();
+		}
+		catch(NotBoundException e)
+		{
+			registered = false;
+			System.err.println("NotBoundException");
+			e.printStackTrace();
+		}
+		
+		//Putting the new server with all servers
+		registered = servers.add(newserver);
+		
+		System.out.println("New server connected addres: " + 
+							address + ", id: " + id);
+		return registered;
 	}
 	//===================End interface ControllerServer=====================
 
@@ -207,7 +234,6 @@ public class Controller extends UnicastRemoteObject
 	 */
 	private InterfaceReplicacao nextServer() throws RemoteException
 	{
-		
 		return servers.get(nextserver % servers.size());
 	}
 	
