@@ -195,6 +195,7 @@ public class Controller extends UnicastRemoteObject
 			System.err.println("Controller.beforeBind() catch ServerNotActiveException");
 			e.printStackTrace();
 		}
+		
 		return nid;
 	}
 
@@ -251,8 +252,8 @@ public class Controller extends UnicastRemoteObject
 	}
 	
 	/**
-	 * 
-	 * @return
+	 * Returns the next server ID
+	 * @return the next server ID
 	 */
 	private int nextServerID()
 	{
