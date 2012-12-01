@@ -30,6 +30,7 @@ public class Client
         InterfaceAcesso ia_cliente = null;
         InterfaceControlador ic_cliente= null;
         ArrayList<String> ALS = null;
+        String busca=null;
         /* Connect to the Controller */
         try
         {
@@ -74,9 +75,18 @@ public class Client
         	ic_cliente.armazena("Trinta", new Box((Object) new String("Trinta")));
         	ic_cliente.armazena("Quarenta", new Box((Object) new String("Quarenta")));
         	ALS = ic_cliente.lista();
+        	System.out.println("Listando objetos armazenados");
         	for (String nome: ALS)
         		System.out.println(nome);
-        	
+        	ic_cliente.intControladorApaga("Dez");
+        	ic_cliente.intControladorApaga("Trinta");
+        	ALS = ic_cliente.lista();
+        	System.out.println("Listando objetos armazenados aós uso de função apagar");
+        	for (String nome: ALS)
+        		System.out.println(nome);
+        	busca=ic_cliente.procura("Vinte");
+        	System.out.println(busca);
+        	busca=ic_cliente.procura("Trinta");        	
         }
         catch (RemoteException e)
         {
@@ -87,7 +97,11 @@ public class Client
         {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        } catch (ObjetoNaoEncontradoException e) {
+			// TODO Auto-generated catch block
+        	System.out.println("Objeto não encontrado");
+			e.printStackTrace();
+		}
     }
 
 }

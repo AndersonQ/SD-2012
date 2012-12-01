@@ -127,6 +127,11 @@ public class Controller extends UnicastRemoteObject
 		return list;
 	}
 	
+	/**
+	 * Debug for client-controller connection
+	 * @return uma string com a mesma mensagem que foi impressa no controlador
+	 * @throws RemoteException
+	 */
 	public String Connection_cliente_OK() throws RemoteException
 	{
 		String s ="Conexão Cliente-Controlador OK";
@@ -202,6 +207,7 @@ public class Controller extends UnicastRemoteObject
 	 */
 	private InterfaceReplicacao nextServer() throws RemoteException
 	{
+		
 		return servers.get(nextserver % servers.size());
 	}
 	
