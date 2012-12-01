@@ -25,6 +25,6 @@ public class RunController {
             e.printStackTrace();
             System.exit(1);
         }
-        System.out.println("Controller Running!");
+        System.out.println("Controller Running!\n\n");
     }
 }
