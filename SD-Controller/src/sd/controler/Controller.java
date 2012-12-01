@@ -4,6 +4,8 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
+import java.rmi.server.RemoteServer;
+import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -183,7 +185,17 @@ public class Controller extends UnicastRemoteObject
 		 * The ID to this server, it will compose the serviceName, like this:
 		 * ServiceID
 		 */
-		return nextServerID();
+		int nid = nextServerID();
+		try
+		{
+			System.out.println("Server " + RemoteServer.getClientHost() + " asked a ID, sending " + nid);
+		}
+		catch (ServerNotActiveException e)
+		{
+			System.err.println("Controller.beforeBind() catch ServerNotActiveException");
+			e.printStackTrace();
+		}
+		return nid;
 	}
 
 	/**
