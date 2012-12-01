@@ -65,7 +65,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     }
 
     //===================End interface Acesso=====================
-    
+ 
     //===================Begin interface Replicacao===================
     
     @Override
