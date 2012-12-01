@@ -32,8 +32,16 @@ public interface InterfaceReplicacao extends Remote
 			throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException;
 	
 	/**
-	 * Get the name of this server
-	 * @return the name of the server
+	 * Get the address of this server
+	 * @return address of this server
+	 * @throws RemoteException
 	 */
-	String getName() throws RemoteException;
+	String getAddress() throws RemoteException;
+	
+	/**
+	 * Get the ID of this server
+	 * @return the ID of this server
+	 * @throws RemoteException
+	 */
+	int getId() throws RemoteException;
 }
