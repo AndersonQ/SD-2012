@@ -32,7 +32,7 @@ public class Client
         InterfaceAcesso ia_cliente = null;
         InterfaceControlador ic_cliente= null;
         ArrayList<String> ALS = null;
-        String busca="", nome="", conteudo="";
+        String busca = null, nome = null, conteudo = null;
         Scanner sc = new Scanner(System.in);
         int opt=1;
         /* Connect to the Controller */
