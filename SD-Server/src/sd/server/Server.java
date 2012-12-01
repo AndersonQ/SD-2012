@@ -45,6 +45,29 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
     	this.ID = id;
     }
 
+    //===================Begin interface Acesso===================
+    
+    @Override
+    public Box recupera(Integer id) throws RemoteException,
+    ObjetoNaoEncontradoException
+    {
+    	Box box = h.get(id);
+    	
+    	//If there is a object in box, return it, other wise throws a exception
+        if(box != null)
+        {
+            return box;
+        }
+        else //throws a exception
+        {
+            throw new ObjetoNaoEncontradoException(id.toString());
+        }
+    }
+
+    //===================End interface Acesso=====================
+    
+    //===================Begin interface Replicacao===================
+    
     @Override
     public void replica(Integer id, Box obj) throws RemoteException, NenhumServidorDisponivelException
     {
@@ -60,6 +83,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
         }
     }
 
+    @Override
     public void intReplicacaoApaga(Integer id) throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException
     {
         try
@@ -80,23 +104,7 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
             System.out.printf("Object %s deleted!\n", id);
         }
     }
-
-    public Box recupera(Integer id) throws RemoteException,
-    ObjetoNaoEncontradoException
-    {
-    	Box box = h.get(id);
-    	
-    	//If there is a object in box, return it, other wise throws a exception
-        if(box != null)
-        {
-            return box;
-        }
-        else //throws a exception
-        {
-            throw new ObjetoNaoEncontradoException(id.toString());
-        }
-    }
-
+    
 	@Override
 	public String getAddress() throws RemoteException
 	{	
@@ -108,4 +116,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
 	{	
 		return this.ID;
 	}
+	
+	//===================End interface Replicacao=====================
 }
