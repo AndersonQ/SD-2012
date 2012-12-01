@@ -27,12 +27,14 @@ public class RunServer
     	//The server Address, it should be received as a parameter
     	String serverAddress  = new String("localhost");
     	//The server to run!
-    	Server server;
-    	
-    	//It servers this
-        InterfaceAcesso ia;
-        InterfaceReplicacao ir;
-        
+    	Server server = null;
+    	//The server provides this services
+        InterfaceAcesso ia = null;
+        InterfaceReplicacao ir = null;
+        //Is it ok?
+        boolean ok;
+        //Counting how many times connect to server failed
+        int fails = 0;
         //It uses this to communicate with the Controller
         InterfaceControllerServer ics = null;
         
@@ -85,15 +87,19 @@ public class RunServer
         	System.err.println("Other Exception");
             e.printStackTrace();
         }
-        //DEBUG
-        System.out.println("Server Conected to Controller!");
-        //Geting an ID
+        
+        //Getting an ID
         id = ics.beforeBind();
         System.out.println("Asking a ID to server: " + id);
         
+        //Creating server with ID obtained from server
         server = new Server(serverAddress, id);
         
-        //Registering service
+        //Putting server into its interfaces
+        ia = server;
+        ir = server;
+        
+        //Registering services
         try
         {
         	Naming.rebind(String.format("%s%d", "rmi://localhost/Acesso", id), ia);
@@ -104,6 +110,17 @@ public class RunServer
             e.printStackTrace();
         }
         
-        ics.registryServer(serverAddress, id);
+        ok = ics.registryServer(serverAddress, id);
+        
+        if(!ok)
+        {
+        	System.out.println("Problem to conect to server: " + server);
+        	fails++;
+        }
+        else
+        {
+            //DEBUG
+            System.out.println("Server Conected to Controller!");
+        }
     }
 }
