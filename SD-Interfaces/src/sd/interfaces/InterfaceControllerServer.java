@@ -13,12 +13,12 @@ public interface InterfaceControllerServer extends Remote {
 			 throws RemoteException;
 	
 	/**
-	 * Send to controller the server address and service name
+	 * Send to controller the server address and server id 
 	 * @param addres the server address
-	 * @param service the service name
+	 * @param id the server id
 	 * @return true if the controller added the server or false other wise
 	 * @throws RemoteException
 	 */
-	boolean conect(String addres, String service)
+	boolean registryServer(String addres, int id)
 			throws RemoteException;
 }

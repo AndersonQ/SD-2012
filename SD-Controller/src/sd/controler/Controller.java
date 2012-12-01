@@ -100,8 +100,8 @@ public class Controller extends UnicastRemoteObject
 			throw new ObjetoNaoEncontradoException(nome);
 		}
 		
-		//TODO fix it!!!!!
-		return String.format("%d@rmi://%s/%s", id.intValue(), nextServer(), nome);
+		InterfaceReplicacao nserver = nextServer();
+		return String.format("%d@rmi://%s/%s", id.intValue(), nserver.getAddress(), String.format("Acesso%d", nserver.getId()));
 	}
 
 	/**
@@ -181,15 +181,16 @@ public class Controller extends UnicastRemoteObject
 	/**
 	 * Send to controller the server address and service name
 	 * @param addres the server address
-	 * @param service the service name
+	 * @param serviceAcesso name registered to service Acesso
+	 * @param serviceReplicacao name registered to service Replicacao
 	 * @return true if the controller added the server or false other wise
 	 * @throws RemoteException
 	 */
-	public boolean conect(String addres, String service) throws RemoteException
+	public boolean registryServer(String addres, int id) throws RemoteException
 	{
 		//TODO do all things
-		System.out.println("Controller.conect received addres: " + 
-							addres + " and service: " + service);
+		System.out.println("Controller.registryServer received addres: " + 
+							addres + ", id: " + id);
 		return true;
 	}
 	//===================End interface ControllerServer=====================
@@ -199,9 +200,9 @@ public class Controller extends UnicastRemoteObject
 	 * @return
 	 * @throws RemoteException 
 	 */
-	private String nextServer() throws RemoteException
+	private InterfaceReplicacao nextServer() throws RemoteException
 	{
-		return servers.get(nextserver % servers.size()).getName();
+		return servers.get(nextserver % servers.size());
 	}
 	
 	/**

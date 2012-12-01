@@ -22,23 +22,32 @@ public class RunServer
 {
     public static void main(String[] args) throws RemoteException
     {
+    	//The server ID
+    	int id;
+    	//The server Address, it should be received as a parameter
+    	String serverAddress  = new String("localhost");
+    	//The server to run!
+    	Server server;
+    	
     	//It servers this
         InterfaceAcesso ia;
         InterfaceReplicacao ir;
         
-        //It uses this
+        //It uses this to communicate with the Controller
         InterfaceControllerServer ics = null;
         
         //Me!!!!
         Server s;
-
+        
+        s = new Server();
+        ia = s;
+        ir = s;
+        
+        //DEBUG
         System.out.println("Server object created");
+        
         try
         {
-            s = new Server();
-            ia = s;
-            ir = s;
-
             System.out.println("Binding " + s);
             Naming.rebind("rmi://localhost/Acesso", ia);
             Naming.rebind("rmi://localhost/Replica", ir);
@@ -51,6 +60,7 @@ public class RunServer
         System.out.println("Running!");
         
         System.out.println("Trying conect to Controller:");
+        //Getting Controller from binder
         try
         {
         	ics = (InterfaceControllerServer) Naming.lookup("rmi://localhost/Controller");
@@ -75,9 +85,25 @@ public class RunServer
         	System.err.println("Other Exception");
             e.printStackTrace();
         }
+        //DEBUG
         System.out.println("Server Conected to Controller!");
-        int id = ics.beforeBind();
+        //Geting an ID
+        id = ics.beforeBind();
         System.out.println("Asking a ID to server: " + id);
-        System.out.println("conect: " + ics.conect("localhost", String.format("service%d", id)));
+        
+        server = new Server(serverAddress, id);
+        
+        //Registering service
+        try
+        {
+        	Naming.rebind(String.format("%s%d", "rmi://localhost/Acesso", id), ia);
+        	Naming.rebind(String.format("%s%d", "rmi://localhost/Replica", id), ir);
+        }
+        catch(Exception e)
+        {
+            e.printStackTrace();
+        }
+        
+        ics.registryServer(serverAddress, id);
     }
 }
