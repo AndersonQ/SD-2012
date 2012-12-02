@@ -111,6 +111,7 @@ public class Controller extends UnicastRemoteObject
 		}
 		
 		InterfaceReplicacao nserver = nextServer();
+		
 		return String.format("%d@rmi://%s/%s", id.intValue(), nserver.getAddress(), String.format("Acesso%d", nserver.getId()));
 	}
 
@@ -233,7 +234,9 @@ public class Controller extends UnicastRemoteObject
 	 */
 	public boolean registryServer(String address, int id) throws RemoteException
 	{
-		//Was the server registered?
+		/* Was the server registered?
+		 * If some thing fails it will be set to 'false'
+		 */
 		boolean registered = true;
 		//New server
 		InterfaceReplicacao newserver = null;
@@ -256,6 +259,26 @@ public class Controller extends UnicastRemoteObject
 			e.printStackTrace();
 		}
 		
+		/*
+		 * Get a server to provide all objects to the new server
+		 * If there is not any server, this new server is the first
+		 */
+		InterfaceReplicacao nserver = null;
+		try 
+		{
+			//Get a server
+			nserver = nextServer();
+			
+			String server =  String.format("rmi://%s/%s", nserver.getAddress(), String.format("Acesso%d", nserver.getId()));
+			
+			//Command the new server copy all objects from another server
+			registered = newserver.replicaAll(objects, server);
+		} 
+		catch (NenhumServidorDisponivelException e) 
+		{
+			System.out.println("First server connecting...");
+		}
+
 		//Putting the new server with all servers
 		registered = servers.add(newserver);
 		
@@ -272,9 +295,14 @@ public class Controller extends UnicastRemoteObject
 	 * Gets the server to be informed to the client
 	 * @return
 	 * @throws RemoteException 
+	 * @throws NenhumServidorDisponivelException 
 	 */
-	private InterfaceReplicacao nextServer() throws RemoteException
+	private InterfaceReplicacao nextServer() throws RemoteException, NenhumServidorDisponivelException
 	{
+		if(servers.size() == 0)
+		{
+			throw new NenhumServidorDisponivelException();
+		}
 		return servers.get(nextserver % servers.size());
 	}
 	
