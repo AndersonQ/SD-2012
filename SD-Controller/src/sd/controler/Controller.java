@@ -36,7 +36,7 @@ public class Controller extends UnicastRemoteObject
 	/** Keep the pair service-server_position_in_vector_server.
 	 *  It will be used to remove inactive servers
 	 */
-	private Hashtable<String, Integer> ser;
+	private Hashtable<String, Integer> services;
 	/** A 'list' of all stored objects */
 	private Hashtable<String, Integer> objects;
 	/** The next server to be used by clients */
@@ -53,7 +53,7 @@ public class Controller extends UnicastRemoteObject
 
         //Initialising variables
         this.servers = new Vector<InterfaceReplicacao>();
-        this.ser = new Hashtable<String, Integer>();
+        this.services = new Hashtable<String, Integer>();
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
         Controller.ID = 0;
@@ -179,7 +179,7 @@ public class Controller extends UnicastRemoteObject
 	@Override
 	public void reportFail(String service) throws RemoteException
 	{
-		int pos = ser.get(service);
+		int pos = services.get(service);
 
 		try
 		{
@@ -283,7 +283,7 @@ public class Controller extends UnicastRemoteObject
 		registered = servers.add(newserver);
 		
 		//Keeping the pair service-server_position_in_vector_server. it will be used to remove inactive servers
-		ser.put(String.format("Acesso%d", id), servers.indexOf(newserver));
+		services.put(String.format("Acesso%d", id), servers.indexOf(newserver));
 		
 		System.out.println("New server connected addres: " + 
 							address + ", id: " + id);
