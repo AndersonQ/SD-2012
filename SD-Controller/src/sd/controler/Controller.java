@@ -85,8 +85,10 @@ public class Controller extends UnicastRemoteObject
 		//TODO TEST IT!!!!
 		for(InterfaceReplicacao ir: servers)
 		{
-		    //TODO Remove the server if it does not respond.
-		    ir.areYouAlive();
+		    boolean alive = false;
+		    alive = ir.areYouAlive();
+		    if(!alive)
+		        removeDeadServer(ir);
 			ir.replica(id, obj);
 			//DEBUG
 			System.out.println("Stored object " + obj + ", id " + id + " in server " + ir.getId());
@@ -316,10 +318,8 @@ public class Controller extends UnicastRemoteObject
 		    }
 		    catch (RemoteException e)
 		    {
-		        services.remove(servers.get((nextserver + i) % servers.size()));
-		        servers.remove((nextserver + i) % servers.size());
+		        removeDeadServer((nextserver + i) % servers.size());
 		        nextserver++;
-		        System.err.printf("Server %d removed!\n", nextserver% servers.size());
 		    }
 		}
 		if(!alive)
@@ -338,5 +338,19 @@ public class Controller extends UnicastRemoteObject
 		Controller.serverID = Controller.serverID + 1;
 
 		return id;
+	}
+
+	private void removeDeadServer(int server)
+	{
+	    services.remove(servers.get(server));
+	    servers.remove(server);
+	    System.err.printf("Server %d removed!\n", nextserver% servers.size());
+	}
+
+	private void removeDeadServer(InterfaceReplicacao server)
+	{
+	    services.remove(server);
+	    servers.remove(server);
+	    System.err.printf("Server %d removed!\n", nextserver% servers.size());
 	}
 }
