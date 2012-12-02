@@ -76,7 +76,7 @@ public class Controller extends UnicastRemoteObject
 		Integer id;
 		id = objects.get(nome);
 		if(id != null)
-		    throw new ObjetoJaExisteException("\"" + nome + "\""+ " aready stored!");
+		    throw new ObjetoJaExisteException("\"" + nome + "\""+ " already stored!");
 		id = new Integer(ID++);
 		//Put the object in the list
 		objects.put(nome, new Integer(id));
