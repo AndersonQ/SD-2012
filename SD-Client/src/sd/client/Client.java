@@ -10,6 +10,7 @@ import java.util.Scanner;
 
 
 import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoJaExisteException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceAcesso;
 import sd.interfaces.InterfaceControlador;
@@ -79,8 +80,9 @@ public class Client
 	        	System.out.println("Digite o seu conteúdo:");
 	        	conteudo=sc.next();
 	        	System.out.println("Armazenando objeto...");
-	        	try{
-	        	ic_cliente.armazena(nome, new Box((Object) conteudo));
+	        	try
+	        	{
+	        	    ic_cliente.armazena(nome, new Box((Object) conteudo));
 	        	}
 	        	catch (RemoteException e)
 	            {
@@ -92,6 +94,10 @@ public class Client
 	                 // TODO Auto-generated catch block
 	                 e.printStackTrace();
 	            }
+	        	catch (ObjetoJaExisteException e)
+	        	{
+	        	    e.printStackTrace();
+	        	}
 	            System.out.println("Objeto armazenado com sucesso\n");
 				break;
 				
