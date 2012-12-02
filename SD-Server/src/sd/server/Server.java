@@ -171,5 +171,11 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
 		return this.ID;
 	}
 
+    @Override
+    public boolean areYouAlive() throws RemoteException
+    {
+        return true;
+    }
+
 	//===================End interface Replicacao=====================
 }
