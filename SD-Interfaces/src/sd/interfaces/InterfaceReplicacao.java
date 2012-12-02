@@ -3,6 +3,7 @@ package sd.interfaces;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.Hashtable;
 
 import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
@@ -20,6 +21,16 @@ public interface InterfaceReplicacao extends Remote
 	 */
 	void replica(Integer id, Box obj)
 			throws RemoteException, NenhumServidorDisponivelException;
+	
+	/**
+	 * 
+	 * Copy all objects from a server
+	 * @param ids ID of each object to copy 
+	 * @param server a server to get the objects
+	 * @return true if all objects were copied, or false other wise
+	 * @throws RemoteException
+	 */
+	boolean replicaAll(Hashtable<String, Integer> objects, String server) throws RemoteException;
 	
 	/**
 	 * Delete an object from all servers
