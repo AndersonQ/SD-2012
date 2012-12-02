@@ -4,7 +4,6 @@ import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -13,8 +12,6 @@ import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceAcesso;
 import sd.interfaces.InterfaceControlador;
-import sd.interfaces.InterfaceControllerServer;
-import sd.interfaces.InterfaceReplicacao;
 import sd.types.Box;
 
 /**
