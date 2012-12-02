@@ -55,4 +55,11 @@ public interface InterfaceReplicacao extends Remote
 	 * @throws RemoteException
 	 */
 	int getId() throws RemoteException;
+	
+	/**
+	 * Checks if the server is alive
+	 * @return true if the server is alive
+	 * @throws RemoteException
+	 */
+	boolean areYouAlive() throws RemoteException;
 }
