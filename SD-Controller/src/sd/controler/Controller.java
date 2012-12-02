@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoJaExisteException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.interfaces.InterfaceControlador;
 import sd.interfaces.InterfaceControllerServer;
@@ -70,10 +71,13 @@ public class Controller extends UnicastRemoteObject
 	 * @throws NenhumServidorDisponivelException There are NOT any available server
 	 */
 	public void armazena(String nome, Box obj) throws RemoteException,
-			NenhumServidorDisponivelException 
+			NenhumServidorDisponivelException, ObjetoJaExisteException
 	{
-		//TODO see if this object already exist
-		Integer id = new Integer(ID++);
+		Integer id;
+		id = objects.get(nome);
+		if(id != null)
+		    throw new ObjetoJaExisteException("\"" + nome + "\""+ " aready stored!");
+		id = new Integer(ID++);
 		//Put the object in the list
 		objects.put(nome, new Integer(id));
 
@@ -165,9 +169,7 @@ public class Controller extends UnicastRemoteObject
 
 		//If there is not a object named nome, it throws exception
 		if(id == null)
-		{
 			throw new ObjetoNaoEncontradoException(nome);
-		}
 
 		//Delete the object from each server
 		for(InterfaceReplicacao s: servers)
@@ -176,7 +178,6 @@ public class Controller extends UnicastRemoteObject
 		}
 	}
 	
-	@Override
 	public void reportFail(String service) throws RemoteException
 	{
 		int pos = services.get(service);
