@@ -31,51 +31,52 @@ public class Client
 {
     public static void main(String[] trash)
     {
-        InterfaceAcesso ia_cliente = null;
-        InterfaceControlador ic_cliente= null;
-        ArrayList<String> ALS = null;
-        String busca="", nome="", conteudo="";
-        String[] busca_split;
-        Scanner sc = new Scanner(System.in);
-        int opt=1, ID=0, ADDR=1;
-        Box obj = null;
+    	/*Begin variable declaration*/
+        InterfaceAcesso ia_cliente = null;			/*This variable will later bind to the server in the case 2 below*/
+        InterfaceControlador ic_cliente= null;		/*This one will bind to the Controller, most of the functions comes from it*/
+        ArrayList<String> ALS = null;				/*This array will receive a copy of the list of objects on the Controller*/
+        String busca="", nome="", conteudo="";		/*Those strings are used through the code to get what the user types and some important information*/
+        String[] busca_split;						/*This array is necessary so we can split the tuple {object_id, server, service}*/
+        Scanner sc = new Scanner(System.in);		/*The simple and easy to use scanner function from java.util library*/
+        int opt=1, ID=0, ADDR=1;					/*opt is used to get the options through the interface, ID and ADDR are actually constants, so access the busca_split String, if necessary later I may declare it as final const */
+        Box obj = null;								/*Generic object used on some functions*/
+        /*End of variable declaration*/
+        
+        
         /* Connect to the Controller */
         try
         {
-            ic_cliente = (InterfaceControlador) Naming.lookup("rmi://localhost/Controller");
+            ic_cliente = (InterfaceControlador) Naming.lookup("rmi://localhost/Controller"); /*Try to bind the variable with the Controller object*/
         }
         catch (MalformedURLException e)
-        {
-            System.out.println("MalformedURLException");
-            e.printStackTrace();
-        }
+        {   System.out.println("MalformedURLException");
+            e.printStackTrace();}
         catch (RemoteException e)
-        {
-            System.out.println("RemoteException");
-            e.printStackTrace();
-        }
+        {   System.out.println("RemoteException");
+            e.printStackTrace();}
         catch (NotBoundException e)
-        {
-            System.out.println("NotBoundException");
-            e.printStackTrace();
-        }
-        catch (Exception e)
-        {
-            System.out.println("Other Exception");
-            e.printStackTrace();
-        }
+        {   System.out.println("NotBoundException");
+            e.printStackTrace();}
+        catch (Exception e)													/*A Lot of catches so you know what's wrong*/
+        {   System.out.println("Other Exception");
+            e.printStackTrace();}
         try{
-        System.out.println(ic_cliente.Connection_cliente_OK()+"\n");
+        System.out.println(ic_cliente.Connection_cliente_OK()+"\n");		/*This function is a Debug Method to make sure everything is running smootly*/
         }
         catch (RemoteException e)
-        {
-            System.out.println("RemoteException");
-            e.printStackTrace();
-        }	while (opt > 0)	{			
-        	//Loop infinito enquanto o programa atende o usuário.
+        {   System.out.println("RemoteException");
+            e.printStackTrace();}	
+        /*At this point, the controller and the Client are connected, we might as well starting to making queries and inputs*/
+        while (opt > 0)	{	//Loop infinito enquanto o programa atende o usuário.
+        	
         	/*Dialogo com o usuário*/
-        	System.out.println("O que deseja fazer?\n1 - Criar e armazenar objeto\n2 - Recuperar e Editar um objeto\n3 - Apagar um objeto\n4 - Listar objetos disponíveis");
-        	opt=sc.nextInt();
+        	System.out.println("O que deseja fazer?\n" +
+        			"1 - Criar e armazenar objeto\n" +
+        			"2 - Recuperar e Editar um objeto\n" +
+        			"3 - Apagar um objeto\n" +
+        			"4 - Listar objetos disponíveis");
+        			opt=sc.nextInt();
+        	/*After this, the real thing starts to happen*/
         	switch (opt) {
         	/*Armazenamento de objetos*/
 			case 1:
@@ -99,7 +100,11 @@ public class Client
 	            }
 	            System.out.println("Objeto armazenado com sucesso\n");
 				break;
-				
+				/*Fim de armazenamento de objetos*/
+				/*Recuperar e Editar um objeto*/
+				/**
+				 * TODO This is not complete yet, we should be able to edit and re-insert the object
+				 */
 			case 2:
 				System.out.println("Digite o nome do objeto que deseja recuperar:");
 	        	nome=sc.next();
@@ -145,9 +150,13 @@ public class Client
 					e2.printStackTrace();
 				}
 				System.out.println(obj.toString());
-				
 				break;
-
+				/*Final de recuperar e Editar um objeto*/
+				/*Apagar um objeto*/
+				/**
+				 * TODO I've been thinking on making part of this a fully implemented function, at some point we should call something like "RemoveObject(String nome)
+				 * the reason is that the case 2 could use it on editting an Object
+				 */
 			case 3:
 				System.out.println("\nDigite o nome do objeto a ser apagado");
 				nome=sc.next();
@@ -167,6 +176,7 @@ public class Client
 				}
 				
 				break;
+				/*Final de apagar um objeto*/
 				/*Listar objetos disponíveis*/
 			case 4:
 				try {
@@ -183,9 +193,9 @@ public class Client
 	        		System.out.println(nome_objetos);
 	        		System.out.println();
 				break;
-	
+				/*FIM Listar objetos disponíveis*/
 			default:
-			
+				opt=0;
 				break;
 			}
     }}
