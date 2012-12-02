@@ -85,6 +85,8 @@ public class Controller extends UnicastRemoteObject
 		//TODO TEST IT!!!!
 		for(InterfaceReplicacao ir: servers)
 		{
+		    //TODO Remove the server if it does not respond.
+		    ir.areYouAlive();
 			ir.replica(id, obj);
 			//DEBUG
 			System.out.println("Stored " + obj + ", id " + id + " in server " + ir);
@@ -290,6 +292,7 @@ public class Controller extends UnicastRemoteObject
 							address + ", id: " + id);
 		return registered;
 	}
+	
 	//===================End interface ControllerServer=====================
 
 	/**
@@ -300,10 +303,27 @@ public class Controller extends UnicastRemoteObject
 	 */
 	private InterfaceReplicacao nextServer() throws RemoteException, NenhumServidorDisponivelException
 	{
+	    boolean alive = false;
 		if(servers.size() == 0)
 		{
 			throw new NenhumServidorDisponivelException();
 		}
+		for(int i = 0; i < servers.size(); i++)
+		{
+		    try
+		    {
+		        alive = servers.get((nextserver + i) % servers.size()).areYouAlive();
+		    }
+		    catch (RemoteException e)
+		    {
+		        services.remove(servers.get((nextserver + i) % servers.size()));
+		        servers.remove((nextserver + i) % servers.size());
+		        nextserver++;
+		        System.err.printf("Server %d removed!\n", nextserver% servers.size());
+		    }
+		}
+		if(!alive)
+		    throw new NenhumServidorDisponivelException();
 		return servers.get(nextserver % servers.size());
 	}
 	
