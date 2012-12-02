@@ -54,7 +54,7 @@ public interface InterfaceControlador extends Remote
 	/**
 	 * Escreve uma mensagem na tela do controlador e do Cliente, confirmando conexão
 	 * @return Sting - Mensagem de conexão ok.
-	 * @throws RemoteException Por que Deus quer assim
+	 * @throws RemoteException
 	 */
 	public String Connection_cliente_OK() throws RemoteException;
 	
