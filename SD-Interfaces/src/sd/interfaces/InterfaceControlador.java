@@ -4,6 +4,7 @@ import java.rmi.*;
 import java.util.ArrayList;
 
 import sd.exceptions.NenhumServidorDisponivelException;
+import sd.exceptions.ObjetoJaExisteException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.types.Box;
 
@@ -17,7 +18,7 @@ public interface InterfaceControlador extends Remote
 	 * @throws NenhumServidorDisponivelException There are NOT any available server
 	 */
 	void armazena(String nome, Box obj)
-			throws RemoteException, NenhumServidorDisponivelException;
+			throws RemoteException, NenhumServidorDisponivelException, ObjetoJaExisteException;
 	
 	/**
 	 * Look for a object
