@@ -33,6 +33,10 @@ public class Controller extends UnicastRemoteObject
 {
 	/** The servers */
 	private Vector<InterfaceReplicacao> servers;
+	/** Keep the pair service-server_position_in_vector_server.
+	 *  It will be used to remove inactive servers
+	 */
+	private Hashtable<String, Integer> ser;
 	/** A 'list' of all stored objects */
 	private Hashtable<String, Integer> objects;
 	/** The next server to be used by clients */
@@ -49,6 +53,7 @@ public class Controller extends UnicastRemoteObject
 
         //Initialising variables
         this.servers = new Vector<InterfaceReplicacao>();
+        this.ser = new Hashtable<String, Integer>();
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
         Controller.ID = 0;
@@ -144,7 +149,6 @@ public class Controller extends UnicastRemoteObject
 		return s;
 	}
 	
-
 	/**
 	 * Delete an object
 	 * @param nome the name of the object to be deleted
@@ -169,6 +173,26 @@ public class Controller extends UnicastRemoteObject
 		{
 			s.intReplicacaoApaga(id);
 		}
+	}
+	
+	@Override
+	public void reportFail(String service) throws RemoteException
+	{
+		int pos = ser.get(service);
+
+		try
+		{
+			System.out.println("Client " + RemoteServer.getClientHost() + " reported down of service " + 
+								service + " removing it from servers list");
+		}
+		catch (ServerNotActiveException e)
+		{
+			System.err.println("Controller.reportFail catched ServerNotActiveException");
+			e.printStackTrace();
+		}
+		
+		//Remove the inactive server from servers list
+		servers.remove(pos);
 	}
 	//===================End interface Controller=====================
 
@@ -234,6 +258,9 @@ public class Controller extends UnicastRemoteObject
 		
 		//Putting the new server with all servers
 		registered = servers.add(newserver);
+		
+		//Keeping the pair service-server_position_in_vector_server. it will be used to remove inactive servers
+		ser.put(String.format("Acesso%d", id), servers.indexOf(newserver));
 		
 		System.out.println("New server connected addres: " + 
 							address + ", id: " + id);
