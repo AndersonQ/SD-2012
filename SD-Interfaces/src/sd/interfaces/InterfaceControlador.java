@@ -57,4 +57,11 @@ public interface InterfaceControlador extends Remote
 	 * @throws RemoteException Por que Deus quer assim
 	 */
 	public String Connection_cliente_OK() throws RemoteException;
+	
+	/**
+	 * Report a fail of a service to Controller
+	 * @param service name of service that failed
+	 * @throws RemoteException
+	 */
+	public void reportFail(String service) throws RemoteException;
 }
