@@ -89,7 +89,7 @@ public class Controller extends UnicastRemoteObject
 		    ir.areYouAlive();
 			ir.replica(id, obj);
 			//DEBUG
-			System.out.println("Stored " + obj + ", id " + id + " in server " + ir);
+			System.out.println("Stored object " + obj + ", id " + id + " in server " + ir.getId());
 		}
 	}
 
