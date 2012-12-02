@@ -26,6 +26,7 @@ import sd.types.Box;
  *
  */
 
+
 public class Client
 {
     public static void main(String[] trash)
@@ -34,8 +35,10 @@ public class Client
         InterfaceControlador ic_cliente= null;
         ArrayList<String> ALS = null;
         String busca="", nome="", conteudo="";
+        String[] busca_split;
         Scanner sc = new Scanner(System.in);
-        int opt=1;
+        int opt=1, ID=0, ADDR=1;
+        Box obj = null;
         /* Connect to the Controller */
         try
         {
@@ -68,9 +71,10 @@ public class Client
         {
             System.out.println("RemoteException");
             e.printStackTrace();
-        }	while (opt > 0)	{			//Loop infinito enquanto o programa atende o usuário.
+        }	while (opt > 0)	{			
+        	//Loop infinito enquanto o programa atende o usuário.
         	/*Dialogo com o usuário*/
-        	System.out.println("O que deseja fazer?\n1 - Criar e armazenar objeto\n2 - Procurar um objeto\n3 - Recuperar um objeto\n4 - Apagar um objeto\n5 - Listar objetos disponíveis");
+        	System.out.println("O que deseja fazer?\n1 - Criar e armazenar objeto\n2 - Recuperar e Editar um objeto\n3 - Apagar um objeto\n4 - Listar objetos disponíveis");
         	opt=sc.nextInt();
         	switch (opt) {
         	/*Armazenamento de objetos*/
@@ -97,19 +101,59 @@ public class Client
 				break;
 				
 			case 2:
+				System.out.println("Digite o nome do objeto que deseja recuperar:");
+	        	nome=sc.next();
+	        	try {
+					busca=ic_cliente.procura(nome);
+				} catch (RemoteException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (NenhumServidorDisponivelException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (ObjetoNaoEncontradoException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				busca_split=busca.split("@");
+				System.out.println("Objeto encontrado com ID: "+busca_split[ID]);
+				System.out.println("No Endereço: "+busca_split[ADDR]);
+				System.out.println("Conectando ao servidor...");
+				try {
+					ia_cliente= (InterfaceAcesso) Naming.lookup(busca_split[ADDR]);
+				} catch (MalformedURLException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (RemoteException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (NotBoundException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				System.out.println("Conectado!");
+				try {
+					obj=ia_cliente.recupera(Integer.parseInt(busca_split[ID]));
+				} catch (NumberFormatException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (RemoteException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				} catch (ObjetoNaoEncontradoException e2) {
+					// TODO Auto-generated catch block
+					e2.printStackTrace();
+				}
+				System.out.println(obj.toString());
 				
 				break;
 
 			case 3:
-				
-				break;
-				
-			case 4:
 				System.out.println("\nDigite o nome do objeto a ser apagado");
 				nome=sc.next();
 				try {
-					ic_cliente.intControladorApaga(nome);
 					System.out.println("\nProcurando...\n");
+					ic_cliente.intControladorApaga(nome);
 					System.out.println("Objeto removido com sucesso\n");
 				} catch (RemoteException e) {
 					// TODO Auto-generated catch block
@@ -124,7 +168,7 @@ public class Client
 				
 				break;
 				/*Listar objetos disponíveis*/
-			case 5:
+			case 4:
 				try {
 					ALS = ic_cliente.lista();
 				} catch (RemoteException e1) {
