@@ -1,10 +1,16 @@
 package sd.server;
 
+import java.net.MalformedURLException;
+import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
+import java.util.Enumeration;
 import java.util.Hashtable;
+import java.util.Set;
 import java.util.TreeSet;
 
 import sd.exceptions.NenhumServidorDisponivelException;
@@ -82,6 +88,57 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
             e.printStackTrace();
         }
     }
+    
+	@Override
+	public boolean replicaAll(Hashtable<String, Integer> objects, String server) throws RemoteException
+	{
+		//Interface to access other server to get all objects
+		InterfaceAcesso ia = null;
+		//Was replicaAll a success?
+		boolean success = true; 
+		
+		//Looking for the server
+		try
+		{
+			ia = (InterfaceAcesso) Naming.lookup(server);
+		}
+		catch(MalformedURLException e)
+		{
+			System.err.println("Server.replicaAll catch MalformedURLException");
+			e.printStackTrace();
+			success = false;
+		}
+		catch(NotBoundException e)
+		{
+			System.err.println("Server.replicaAll catch NotBoundException");
+			e.printStackTrace();
+			success = false;
+		}
+		
+		Set<String> objs = objects.keySet();
+
+		System.out.println("Coping objects from " + ia);
+		//Get all objects
+		for(String s: objs)
+		{
+			Integer id = objects.get(s);
+			try
+			{
+				Box obj = ia.recupera(id);
+				h.put(id, obj);
+			} 
+			catch (ObjetoNaoEncontradoException e)
+			{
+				System.err.println("Server.replicaAll catch ObjetoNaoEncontradoException to ID " + id.toString());
+				e.printStackTrace();
+				success = false;
+			}
+		}
+		
+		System.out.println("All objects copied from " + ia);
+		
+		return success;
+	}
 
     @Override
     public void intReplicacaoApaga(Integer id) throws RemoteException, NenhumServidorDisponivelException, ObjetoNaoEncontradoException
@@ -116,6 +173,6 @@ public class Server extends UnicastRemoteObject implements InterfaceAcesso, Inte
 	{	
 		return this.ID;
 	}
-	
+
 	//===================End interface Replicacao=====================
 }
