@@ -34,7 +34,7 @@ public class Client
 		InterfaceAcesso ia_cliente = null;
 		/** This one will bind to the Controller, most of the functions comes from it */
         InterfaceControlador ic_cliente= null;
-        /** This array will receive a copy of the list of objects on the Controller */
+        /** This array will receive a copy of the list of objects from the Controller */
         ArrayList<String> ALS = null;
         /** Those strings are used through the code to get what the user types and keep some important information */
         String busca = null, nome = null, tmp = null;
@@ -54,7 +54,8 @@ public class Client
         /* Connect to the Controller */
         try
         {
-            ic_cliente = (InterfaceControlador) Naming.lookup("rmi://localhost/Controller"); /*Try to bind the variable with the Controller object*/
+        	/*Try to bind the variable with the Controller object*/
+            ic_cliente = (InterfaceControlador) Naming.lookup("rmi://localhost/Controller");
         }
         /*A Lot of catches so you know what's wrong, if something go wrong*/
         catch (MalformedURLException e)
@@ -90,7 +91,7 @@ public class Client
         }	
         /*At this point, the controller and the Client are connected, we might as well starting to making queries and inputs*/
         
-      //Loop infinito enquanto o programa atende o usuário.
+        //Loop infinito enquanto o programa atende o usuário.
         while (opt > 0)
         {
 
@@ -135,6 +136,7 @@ public class Client
 	        		System.out.println("Objeto armazenado com sucesso\n");
 	        		break;
 	        		/*Fim de armazenamento de objetos*/
+	        		
 	        		/*Recuperar e Editar um objeto*/
 	        		/**
 	        		 * TODO This is not complete yet, we should be able to edit and re-insert the object
@@ -165,12 +167,12 @@ public class Client
 	        			break;
 	        		}
 	        		busca_split=busca.split("@");
-	        		System.out.println("Objeto encontrado com ID: "+busca_split[ID]);
-	        		System.out.println("No Endereço: "+busca_split[ADDR]);
+	        		System.out.println("Objeto encontrado com ID: " + busca_split[ID]);
+	        		System.out.println("No Endereço: " + busca_split[ADDR]);
 	        		System.out.println("Conectando ao servidor...");
 	        		try
 	        		{
-	        			ia_cliente= (InterfaceAcesso) Naming.lookup(busca_split[ADDR]);
+	        			ia_cliente = (InterfaceAcesso) Naming.lookup(busca_split[ADDR]);
 	        		}
 	        		catch (MalformedURLException e2)
 	        		{
@@ -191,9 +193,10 @@ public class Client
 	        			break;
 	        		}
 	        		System.out.println("Conectado!");
+	        		
 	        		try
 	        		{
-	        			obj=ia_cliente.recupera(Integer.parseInt(busca_split[ID]));
+	        			obj = ia_cliente.recupera(Integer.parseInt(busca_split[ID]));
 	        		}
 	        		catch (NumberFormatException e2)
 	        		{
@@ -214,14 +217,16 @@ public class Client
 	        			break;
 	        		}
 	        		System.out.println("Deseja alterar o objeto?\n1 - SIM\n2 - NAO");
-	        		subopt=sc.nextInt();
-	        		tmp=nome;
-	        		if(subopt==1)
+	        		subopt = sc.nextInt();
+	        		tmp = nome;
+	        		
+	        		if(subopt == 1)
 	        		{
 	        			while(tmp.equals(nome))
 	        			{
 	        				System.out.println("Digite um novo nome para o objeto.");
-	        				nome=sc.next();
+	        				nome = sc.next();
+	        				
 	        				if(nome.equals(tmp))
 	        				{
 	        					System.out.println("Objeto com nome igual.");
@@ -229,8 +234,9 @@ public class Client
 	        			}
 	        			
 	        			System.out.println("Deseja apagar o objeto original?\n1 - SIM\n2 - NAO");
-	        			subopt=sc.nextInt();
-	        			if(subopt==1)
+	        			subopt = sc.nextInt();
+	        			
+	        			if(subopt == 1)
 	        			{
 	        				System.out.println("Apagando...");
 	        				try
@@ -283,6 +289,7 @@ public class Client
 	        		}
 	        		break;
 	        		/*Final de recuperar e Editar um objeto*/
+	        		
 	        		/*Apagar um objeto*/
 	        		/**
 	        		 * TODO I've been thinking on making part of this a fully implemented function, at some point we should call something like "RemoveObject(String nome)
@@ -291,7 +298,8 @@ public class Client
 	        		 */
 	        	case 3:
 	        		System.out.println("\nDigite o nome do objeto a ser apagado");
-	        		nome=sc.next();
+	        		nome = sc.next();
+	        		
 	        		try
 	        		{
 	        			System.out.println("\nProcurando...\n");
@@ -317,6 +325,7 @@ public class Client
 	        		}
 	        		break;
 	        		/*Final de apagar um objeto*/
+	        		
 	        		/*Listar objetos disponíveis*/
 	        		/**
 	        		 * This simply loads the object list from the Controller in a local 
@@ -339,6 +348,7 @@ public class Client
 	        			break;
 	        		}
 	        		System.out.println("\nListando nomes dos objetos armazenados");
+	        		
 	        		for (String nome_objetos: ALS)
 	        		{
 	        			System.out.println(nome_objetos);
@@ -346,8 +356,9 @@ public class Client
 	        		System.out.println();
 	        		break;
 	        		/*FIM Listar objetos disponíveis*/
+	        		
 	        	default:
-	        		opt=0;
+	        		opt = 0;
 	        		break;
 	        }
         }
