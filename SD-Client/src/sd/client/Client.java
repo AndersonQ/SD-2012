@@ -35,10 +35,10 @@ public class Client
         InterfaceAcesso ia_cliente = null;			/*This variable will later bind to a server in the case 2 below*/
         InterfaceControlador ic_cliente= null;		/*This one will bind to the Controller, most of the functions comes from it*/
         ArrayList<String> ALS = null;				/*This array will receive a copy of the list of objects on the Controller*/
-        String busca="", nome="";					/*Those strings are used through the code to get what the user types and some important information*/
+        String busca="", nome="", tmp="";			/*Those strings are used through the code to get what the user types and keep some important information*/
         String[] busca_split;						/*This array is necessary so we can split the tuple {object_id, server, service}*/
         Scanner sc = new Scanner(System.in);		/*The simple and easy to use scanner function from java.util library*/
-        int opt=1, ID=0, ADDR=1;					/*opt is used to get the options through the interface, ID and ADDR are actually constants, so access the busca_split String, if necessary later I may declare it as final const */
+        int opt=1, subopt=1, ID=0, ADDR=1;			/*opt and sub opt are used to get the options through the interface, ID and ADDR are actually constants, to access the busca_split String indexes, if necessary later I may declare it as final const */
         Box obj = null;								/*Generic object used on some functions*/
         /*End of variable declaration*/
         
@@ -74,7 +74,7 @@ public class Client
         			"1 - Criar e armazenar objeto\n" +
         			"2 - Recuperar e Editar um objeto\n" +
         			"3 - Apagar um objeto\n" +
-        			"4 - Listar objetos disponíveis" +
+        			"4 - Listar objetos disponíveis\n" +
         			"0 - Finalizar o Cliente");
         			opt=sc.nextInt();
         	/*After this, the real thing starts to happen*/
@@ -159,8 +159,54 @@ public class Client
 					e2.printStackTrace();
 					break;
 				}
-				System.out.println("Conectado!");
-					
+				System.out.println("Deseja alterar o objeto?\n1 - SIM\n2 - NAO");
+				subopt=sc.nextInt();
+				tmp=nome;
+				if(subopt==1){
+					while(tmp.equals(nome)){
+						System.out.println("Digite um novo nome para o objeto.");
+						nome=sc.next();
+						if(nome.equals(tmp))
+							System.out.println("Objeto com nome igual.");
+					}
+				System.out.println("Deseja apagar o objeto original?\n1 - SIM\n2 - NAO");
+				subopt=sc.nextInt();
+					if(subopt==1){
+						System.out.println("Apagando...");
+					try {
+						ic_cliente.intControladorApaga(nome);
+					} catch (RemoteException e) {
+						System.out.println("RemoteException");
+						e.printStackTrace();
+						break;
+					} catch (NenhumServidorDisponivelException e) {
+						System.out.println("NenhumServidorDisponivelException");
+						e.printStackTrace();
+						break;
+					} catch (ObjetoNaoEncontradoException e) {
+						System.out.println("Objeto Não encontrado\n");
+						break;
+					}
+					System.out.println("Objeto removido com sucesso\n");
+					}
+					System.out.println("Armazenando novo objeto...");
+		        	try{
+		        	ic_cliente.armazena(nome, new Box((Object) nome));		/*This sends the new object to the Controller, so he makes replicas on the servers*/
+		        	}
+		        	catch (RemoteException e)
+		            {
+		        		System.out.println("RemoteException");
+		                e.printStackTrace();
+		                break;
+		            }
+		            catch (NenhumServidorDisponivelException e)
+		            {
+		            	 System.out.println("NenhumServidorDisponivelException");
+		                 e.printStackTrace();
+		                 break;
+		            }
+		            	System.out.println("Novo Objeto armazenado com sucesso\n");
+					}
 				break;
 				/*Final de recuperar e Editar um objeto*/
 				/*Apagar um objeto*/
