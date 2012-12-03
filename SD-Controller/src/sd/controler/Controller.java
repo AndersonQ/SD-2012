@@ -305,27 +305,15 @@ public class Controller extends UnicastRemoteObject
 	 */
 	private InterfaceReplicacao nextServer() throws RemoteException, NenhumServidorDisponivelException
 	{
+		//It will be return the next server
+		InterfaceReplicacao ir = null;
 	    boolean alive = false;
 	    ArrayList<Integer> To_remove = new ArrayList<Integer>();
 		if(servers.size() == 0)
 		{
 			throw new NenhumServidorDisponivelException();
 		}
-		/**
-		 * TODO Just to add a note, things went wrong after this "for", when using Procura. 
-		 * Changed some things so it can be used for both registry and procura. But still needs reviews.
-		 * 
-		 * Let me explain what I tested. If there were 2 servers, with ID 0 and 1, and the server 0 is down it will 
-		 * catch an exception at i==0 and nextserver==0 (on a first time run, for example), and it will do "nextserver++". 
-		 * On the second step of the "for" it will simply skip the "for" as i==1 and servers.size()==1 now, 
-		 * thus not checking the other server. 
-		 * There are other problems, even if the "for" was not skiped, on the next "try" it would do the line as 
-		 * "servers.get(1+1%servers.size)", it seens that it would skip a server on the list, if the list were bigger.
-		 * 
-		 * 
-		 * This comment makes more sense if viewed in gitg than in eclipse, since you can see both versions of the code there, 
-		 * not only the most recent version
-		 */
+
 		for(int i = 0; i < servers.size(); i++)
 		{
 		    try
@@ -333,10 +321,12 @@ public class Controller extends UnicastRemoteObject
 		    	/*This part seens ok, it will eventually check every server on the list so, no change */
 		        alive = servers.get((nextserver + i) % servers.size()).areYouAlive();
 		        /*If you found an alive server, get it's index and break the search*/
-		        if (alive){
-		        nextserver=(nextserver + i) % servers.size();
-		        break;}
-		        
+		        if(alive)
+		        {
+		        	nextserver=(nextserver + i) % servers.size();
+		        	ir = servers.get(nextserver-1);
+		        	break;
+		        }      
 		    }
 		    catch (RemoteException e)
 		    {
@@ -344,23 +334,21 @@ public class Controller extends UnicastRemoteObject
 		    	To_remove.add((Integer)(nextserver + i) % servers.size());
 		    }
 		}
-		/**
-		 * TODO I believe this part needs some refine, as there is a very specific case it won't work, 
-		 * if 2 servers are down, the last and the first for example, it may remove a server with a 
-		 * low index first and not find the other server at all.
-		 * Also, is there anything else that use server indexes? They may be compromised after the removal. 
-		 */
+
 		/*If there is someone to remove, try to safely remove servers with highest index first, so it won't screw indexes*/
-		if(To_remove.size()>0)
-			for(int i=(To_remove.size()-1);i>-1;i--)
-				removeDeadServer(To_remove.get(i).intValue()); 
+		if(!To_remove.isEmpty())
+			for(Integer ids: To_remove)
+				removeDeadServer(ids);
+		
 		/*If no one is alive, we got some serious problem*/
 		if(!alive)
 		    throw new NenhumServidorDisponivelException();
+		
 		/*This makes sure that on next search it will start at the next server*/
 		nextserver++;
-		/*Finally, it returns the server it found*/
-		return servers.get(nextserver-1);
+		
+		/*Finally, it returns the server it was found*/
+		return ir;
 	}
 	
 	/**
