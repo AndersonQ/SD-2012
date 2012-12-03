@@ -303,6 +303,8 @@ public class Controller extends UnicastRemoteObject
 	 * @throws RemoteException 
 	 * @throws NenhumServidorDisponivelException 
 	 */
+	/**TODO I'm getting and ArrayOutOfBounds exception here when a Client needs to use it (indirectly, that is)
+	 * Needs a review*/
 	private InterfaceReplicacao nextServer() throws RemoteException, NenhumServidorDisponivelException
 	{
 		//It will be return the next server
