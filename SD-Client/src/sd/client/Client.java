@@ -139,7 +139,12 @@ public class Client
 	        		
 	        		/*Recuperar e Editar um objeto*/
 	        		/**
-	        		 * TODO This is not complete yet, we should be able to edit and re-insert the object
+	        		 * TODO Tested the case 2 with the new features involving removing a dead server, still
+	        		 * works quite well, but when it uses the Controller's "procura(String )" remote method
+	        		 * and a server is down it's showing a NenhumServidorDisponivelException, although there
+	        		 * are other servers online. Pn a second try it's visible that the server was removed 
+	        		 * and although it's really working, I think that when a server is down, if not all of then, 
+	        		 * this should be invisible to the user.
 	        		 */
 	        	case 2:
 	        		System.out.println("Digite o nome do objeto que deseja recuperar:");
