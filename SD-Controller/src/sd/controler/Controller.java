@@ -8,6 +8,7 @@ import java.rmi.server.RemoteServer;
 import java.rmi.server.ServerNotActiveException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Hashtable;
 import java.util.Set;
 import java.util.Vector;
@@ -33,7 +34,7 @@ public class Controller extends UnicastRemoteObject
 						implements InterfaceControlador, InterfaceControllerServer
 {
 	/** The servers */
-	private Vector<InterfaceReplicacao> servers;
+	private Hashtable<Integer, InterfaceReplicacao> sev;
 	/** Keep the pair service-server_position_in_vector_server.
 	 *  It will be used to remove inactive servers
 	 */
@@ -53,7 +54,7 @@ public class Controller extends UnicastRemoteObject
         super();
 
         //Initialising variables
-        this.servers = new Vector<InterfaceReplicacao>();
+        this.sev = new Hashtable<Integer, InterfaceReplicacao>();
         this.services = new Hashtable<String, Integer>();
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
@@ -83,7 +84,10 @@ public class Controller extends UnicastRemoteObject
 
 		//Store object in all servers
 		//TODO TEST IT!!!!
-		for(InterfaceReplicacao ir: servers)
+		
+		//Getting a way to iterate in servers
+		Collection<InterfaceReplicacao> tmp = sev.values();
+		for(InterfaceReplicacao ir: tmp)
 		{
 		    boolean alive = false;
 		    alive = ir.areYouAlive();
@@ -175,8 +179,10 @@ public class Controller extends UnicastRemoteObject
 		if(id == null)
 			throw new ObjetoNaoEncontradoException(nome);
 
+		//Getting a way to iterate in servers
+		Collection<InterfaceReplicacao> tmp = sev.values();
 		//Delete the object from each server
-		for(InterfaceReplicacao s: servers)
+		for(InterfaceReplicacao s: tmp)
 		{
 			s.intReplicacaoApaga(id);
 		}
@@ -285,11 +291,10 @@ public class Controller extends UnicastRemoteObject
 		}
 
 		//Putting the new server with all servers
-		registered = servers.add(newserver);
-		
-		//Keeping the pair service-server_position_in_vector_server. it will be used to remove inactive servers
-		services.put(String.format("Acesso%d", id), servers.indexOf(newserver));
-		
+		try {sev.put(new Integer(id), newserver);}
+		//Some thing got wrong!
+		catch(NullPointerException e) {registered = false;}
+				
 		System.out.println("New server connected addres: " + 
 							address + ", id: " + id);
 		return registered;
