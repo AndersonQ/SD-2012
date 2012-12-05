@@ -361,7 +361,7 @@ public class Controller extends UnicastRemoteObject
 		}
 		
 		/*If no one is alive, we got some serious problem*/
-		if(!alive)
+		if(vServers.size() == 0)
 		    throw new NenhumServidorDisponivelException();
 		
 		//DEBUG
