@@ -346,7 +346,7 @@ public class Controller extends UnicastRemoteObject
 		    {
 		        /* Get the index of the next server */
 		        nextserver = (nextserver + 1)%vServers.size();
-		        ir = sev.get(sev.get(nextserver));
+		        ir = sev.get(vServers.get(nextserver));
 		        /* Check if it is alive */
 		        alive = ir.areYouAlive();
 		        /*If you found an alive server, get it's index and break the search*/
@@ -364,6 +364,8 @@ public class Controller extends UnicastRemoteObject
 		if(!alive)
 		    throw new NenhumServidorDisponivelException();
 		
+		//DEBUG
+		System.out.printf("Round-Robin selected the server with ID = %d\n", vServers.get(nextserver));
 		/*Finally, it returns the server that was found*/
 		return ir;
 	}
