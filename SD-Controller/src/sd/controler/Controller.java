@@ -362,7 +362,10 @@ public class Controller extends UnicastRemoteObject
 		
 		/*If no one is alive, we got some serious problem*/
 		if(vServers.size() == 0)
+		{
+		    objects.clear();
 		    throw new NenhumServidorDisponivelException();
+		}
 		
 		//DEBUG
 		System.out.printf("Round-Robin selected the server with ID = %d\n", vServers.get(nextserver));
