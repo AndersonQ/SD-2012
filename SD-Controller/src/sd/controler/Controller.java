@@ -47,6 +47,11 @@ public class Controller extends UnicastRemoteObject
 	private static int ID;
 	/** The next server ID */
 	private static int serverID;
+	/**
+	 * The vector to store all server's IDs
+	 * and do the round-robin.
+	 */
+	private Vector<Integer> vServers;
 
     protected Controller() throws RemoteException
     {
@@ -58,6 +63,7 @@ public class Controller extends UnicastRemoteObject
         this.services = new Hashtable<String, Integer>();
         this.objects = new Hashtable<String, Integer>();
         this.nextserver = 0;
+        this.vServers = new Vector<Integer>();
         Controller.ID = 0;
         Controller.serverID = 0;
     }
@@ -75,6 +81,8 @@ public class Controller extends UnicastRemoteObject
 			NenhumServidorDisponivelException, ObjetoJaExisteException
 	{
 		Integer id;
+		boolean alive;
+		InterfaceReplicacao ir;
 		id = objects.get(nome);
 		if(id != null)
 		    throw new ObjetoJaExisteException("\"" + nome + "\""+ " already stored!");
@@ -86,14 +94,15 @@ public class Controller extends UnicastRemoteObject
 		//TODO TEST IT!!!!
 		
 		//Getting a way to iterate in servers
-		Collection<InterfaceReplicacao> tmp = sev.values();
-		for(InterfaceReplicacao ir: tmp)
+		for(Integer s: vServers)
 		{
-		    boolean alive = false;
+		    ir = sev.get(s);
+		    alive= false;
 		    alive = ir.areYouAlive();
 		    if(!alive)
-		        removeDeadServer(ir);
-			ir.replica(id, obj);
+		        removeDeadServer(s);
+		    else
+		        ir.replica(id, obj);
 			//DEBUG
 			System.out.println("Stored object " + obj + ", id " + id + " in server " + ir.getId());
 		}
@@ -174,23 +183,29 @@ public class Controller extends UnicastRemoteObject
 	{
 		//Delete object to the object list
 		Integer id = objects.remove(nome);
+		InterfaceReplicacao ir;
+		boolean alive;
 
 		//If there is not a object named nome, it throws exception
 		if(id == null)
 			throw new ObjetoNaoEncontradoException(nome);
 
 		//Getting a way to iterate in servers
-		Collection<InterfaceReplicacao> tmp = sev.values();
-		//Delete the object from each server
-		for(InterfaceReplicacao s: tmp)
-		{
-			s.intReplicacaoApaga(id);
+        for(Integer s: vServers)
+        {
+            ir = sev.get(s);
+            alive= false;
+            alive = ir.areYouAlive();
+            if(!alive)
+                removeDeadServer(s);
+            else
+                ir.intReplicacaoApaga(id);
 		}
 	}
 	
 	public void reportFail(String service) throws RemoteException
 	{
-		int pos = services.get(service);
+		Integer pos = new Integer(Integer.parseInt(service.split("Acesso")[0]));
 
 		try
 		{
@@ -204,7 +219,8 @@ public class Controller extends UnicastRemoteObject
 		}
 		
 		//Remove the inactive server from servers list
-		servers.remove(pos);
+//		servers.remove(pos);
+		removeDeadServer(pos);
 	}
 	//===================End interface Controller=====================
 
@@ -291,7 +307,12 @@ public class Controller extends UnicastRemoteObject
 		}
 
 		//Putting the new server with all servers
-		try {sev.put(new Integer(id), newserver);}
+		try
+		{
+		    Integer sid = new Integer(id);
+		    sev.put(sid, newserver);
+		    vServers.add(sid);
+		}
 		//Some thing got wrong!
 		catch(NullPointerException e) {registered = false;}
 				
@@ -308,53 +329,42 @@ public class Controller extends UnicastRemoteObject
 	 * @throws RemoteException 
 	 * @throws NenhumServidorDisponivelException 
 	 */
-	/**TODO I'm getting and ArrayOutOfBounds exception here when a Client needs to use it (indirectly, that is)
-	 * Needs a review*/
 	private InterfaceReplicacao nextServer() throws RemoteException, NenhumServidorDisponivelException
 	{
 		//It will be return the next server
 		InterfaceReplicacao ir = null;
 	    boolean alive = false;
-	    ArrayList<Integer> To_remove = new ArrayList<Integer>();
-		if(servers.size() == 0)
+		if(vServers.size() == 0)
 		{
 			throw new NenhumServidorDisponivelException();
 		}
 
-		for(int i = 0; i < servers.size(); i++)
+		/* Try all servers in the vServers */
+		for(int i = 0; i < vServers.size(); i++)
 		{
 		    try
 		    {
-		    	/*This part seens ok, it will eventually check every server on the list so, no change */
-		        alive = servers.get((nextserver + i) % servers.size()).areYouAlive();
+		        /* Get the index of the next server */
+		        nextserver = (nextserver + 1)%vServers.size();
+		        ir = sev.get(sev.get(nextserver));
+		        /* Check if it is alive */
+		        alive = ir.areYouAlive();
 		        /*If you found an alive server, get it's index and break the search*/
 		        if(alive)
-		        {
-		        	nextserver=(nextserver + i) % servers.size();
-		        	ir = servers.get(nextserver-1);
 		        	break;
-		        }      
 		    }
 		    catch (RemoteException e)
 		    {
-		    	/*Add the index of the server that is down for later removal*/
-		    	To_remove.add((Integer)(nextserver + i) % servers.size());
+		        /* If the server is not alive, remove it */
+		        removeDeadServer(vServers.get(nextserver));
 		    }
 		}
-
-		/*If there is someone to remove, try to safely remove servers with highest index first, so it won't screw indexes*/
-		if(!To_remove.isEmpty())
-			for(Integer ids: To_remove)
-				removeDeadServer(ids);
 		
 		/*If no one is alive, we got some serious problem*/
 		if(!alive)
 		    throw new NenhumServidorDisponivelException();
 		
-		/*This makes sure that on next search it will start at the next server*/
-		nextserver++;
-		
-		/*Finally, it returns the server it was found*/
+		/*Finally, it returns the server that was found*/
 		return ir;
 	}
 	
@@ -371,18 +381,11 @@ public class Controller extends UnicastRemoteObject
 		return id;
 	}
 
-	private void removeDeadServer(int server)
+	private void removeDeadServer(Integer server)
 	{
-		
-	    services.remove(servers.get(server));
-	    servers.remove(server);
-	    System.err.printf("Server %d removed!\n", nextserver% servers.size());
-	}
+	    sev.remove(server);
+	    vServers.remove(server);
 
-	private void removeDeadServer(InterfaceReplicacao server)
-	{
-	    services.remove(server);
-	    servers.remove(server);
-	    System.err.printf("Server %d removed!\n", nextserver% servers.size());
+	    System.err.printf("Server %d removed!\n", server);
 	}
 }
