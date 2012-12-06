@@ -16,18 +16,27 @@ public class Box implements Serializable
     Object obj;
 
     /**
-     * @param obj
+     * Creates a box
+     * @param obj the object to be stored
      */
     public Box(Object obj)
     {
         this.obj = obj;
     }
 
+    /**
+     * Gets the object stored
+     * @return the object stored
+     */
     public Object getObj()
     {
         return obj;
     }
 
+    /**
+     * Set the object stored
+     * @param obj a new object to be stored
+     */
     public void setObj(Object obj)
     {
         this.obj = obj;
