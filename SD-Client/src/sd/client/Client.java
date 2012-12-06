@@ -26,7 +26,6 @@ import sd.types.Box;
 
 public class Client
 {
-	static String busca;
 	
     public static void main(String[] trash)
     {
@@ -152,12 +151,8 @@ public class Client
 		}
 		catch (RemoteException e)
 		{
-			String tmp[] = busca.split("/");
-			System.out.println("RemoteException, reporting fail to Controller!");
-			//e.printStackTrace();
-			
-			String service = tmp[tmp.length - 1];
-			ic_cliente.reportFail(service);
+			System.out.println("RemoteException");
+			e.printStackTrace();
 			return;
 		}
 		catch (NenhumServidorDisponivelException e)
@@ -190,7 +185,7 @@ public class Client
 		/**Just a Scanner*/
     	Scanner sc = new Scanner(System.in);
     	/**Strings to keep important information and used for data manipulations*/
-    	String tmp;
+    	String busca, tmp;
         /** This array is necessary so we can split the tuple {object_id, server, service} */
         String[] busca_split;
         
@@ -246,7 +241,8 @@ public class Client
 			return;
 		}
 		System.out.println("Conectado!");
-		
+		System.out.println("Mata o cliente para dar pau plz!!!!");
+		sc.next();
 		try
 		{
 			obj = ia_cliente.recupera(Integer.parseInt(busca_split[ID]));
@@ -260,7 +256,20 @@ public class Client
 		catch (RemoteException e2)
 		{
 			System.out.println("RemoteException");
-			e2.printStackTrace();
+			//e2.printStackTrace();
+			String tmp2[] = busca.split("/");
+			System.out.println("RemoteException, reporting fail to Controller!");
+			//e.printStackTrace();
+			
+			String service = tmp2[tmp2.length - 1];
+
+			try {
+				ic_cliente.reportFail(service);
+			} catch (RemoteException e) {
+				System.out.println("RemoteException, Controller dead!");
+				e.printStackTrace();
+			}
+
 			return;
 		}
 		catch (ObjetoNaoEncontradoException e2)
