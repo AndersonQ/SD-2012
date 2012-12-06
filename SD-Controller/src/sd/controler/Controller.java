@@ -191,15 +191,19 @@ public class Controller extends UnicastRemoteObject
 			throw new ObjetoNaoEncontradoException(nome);
 
 		//Getting a way to iterate in servers
-        for(Integer s: vServers)
-        {
-            ir = sev.get(s);
-            alive= false;
-            alive = ir.areYouAlive();
-            if(!alive)
-                removeDeadServer(s);
-            else
-                ir.intReplicacaoApaga(id);
+		for(Integer s: vServers)
+		{
+		    ir = sev.get(s);
+		    alive= false;
+		    try
+		    {
+		        alive = ir.areYouAlive();
+		    }
+		    catch (RemoteException e)
+		    {
+		        removeDeadServer(s);
+		    }
+		    ir.intReplicacaoApaga(id);
 		}
 	}
 	
