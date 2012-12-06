@@ -209,7 +209,11 @@ public class Controller extends UnicastRemoteObject
 	
 	public void reportFail(String service) throws RemoteException
 	{
-		Integer pos = new Integer(Integer.parseInt(service.split("Acesso")[0]));
+		//Splits service to get the server ID
+		String tmp[] = service.split("Acesso");
+
+		//Parse server ID to int
+		Integer pos = new Integer(Integer.parseInt(tmp[1]));
 
 		try
 		{
