@@ -9,6 +9,14 @@ import sd.exceptions.NenhumServidorDisponivelException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.types.Box;
 
+/**
+ * 
+ * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br>
+ * @author André Xavier Martinez
+ * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br>
+ *
+ */
+
 public interface InterfaceReplicacao extends Remote
 {
 
@@ -25,8 +33,8 @@ public interface InterfaceReplicacao extends Remote
 	/**
 	 * 
 	 * Copy all objects from a server
-	 * @param ids ID of each object to copy 
-	 * @param server a server to get the objects
+	 * @param objects a hashtable with object's name and ID
+	 * @param server a RMI string to server to get the objects
 	 * @return true if all objects were copied, or false other wise
 	 * @throws RemoteException
 	 */

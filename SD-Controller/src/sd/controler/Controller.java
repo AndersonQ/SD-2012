@@ -23,9 +23,9 @@ import sd.types.Box;
 
 /**
  * 
- * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br
+ * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br>
  * @author André Xavier Martinez
- * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br
+ * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br>
  *
  */
 
@@ -253,9 +253,8 @@ public class Controller extends UnicastRemoteObject
 
 	/**
 	 * Send to controller the server address and service name
-	 * @param addres the server address
-	 * @param serviceAcesso name registered to service Acesso
-	 * @param serviceReplicacao name registered to service Replicacao
+	 * @param address the server address
+	 * @param id the ID that the server received when called beforeBind()
 	 * @return true if the controller added the server or false other wise
 	 * @throws RemoteException
 	 */
@@ -325,7 +324,7 @@ public class Controller extends UnicastRemoteObject
 
 	/**
 	 * Gets the server to be informed to the client
-	 * @return
+	 * @return an InterfaceReplicacao to the next server that will be used
 	 * @throws RemoteException 
 	 * @throws NenhumServidorDisponivelException 
 	 */

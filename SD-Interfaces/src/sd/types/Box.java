@@ -3,12 +3,13 @@ package sd.types;
 import java.io.Serializable;
 
 /**
- * A box to store any type of object
- * @author Anderson Queiroz <contato(at)andersonq(dot)eti(dot)br
- * @author André Xavier Martinez
- * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br
  * 
+ * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br>
+ * @author André Xavier Martinez
+ * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br>
+ *
  */
+
 @SuppressWarnings("serial")
 public class Box implements Serializable
 {

@@ -8,6 +8,14 @@ import sd.exceptions.ObjetoJaExisteException;
 import sd.exceptions.ObjetoNaoEncontradoException;
 import sd.types.Box;
 
+/**
+ * 
+ * @author Anderson de França Queiroz <contato (at) andersonq (dot) eti (dot) br>
+ * @author André Xavier Martinez
+ * @author Tiago de França Queiroz <contato (at) tiago (dot) eti (dot) br>
+ *
+ */
+
 public interface InterfaceControlador extends Remote
 {
 	/**
