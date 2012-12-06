@@ -26,6 +26,8 @@ import sd.types.Box;
 
 public class Client
 {
+	static String busca;
+	
     public static void main(String[] trash)
     {
     	/*Begin variable declaration*/
@@ -100,7 +102,12 @@ public class Client
         	{
 	        	/*Armazenamento de objetos*/
 	        	case 1:
-	        		Cliente_Armazena(nome, ic_cliente);
+				try {
+					Cliente_Armazena(nome, ic_cliente);
+				} catch (RemoteException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	        		break;
 	        	/*Fim de armazenamento de objetos*/
 	        		
@@ -131,8 +138,9 @@ public class Client
      * Cria um objeto e solicita que o controlador o armazene
      * @param nome O nome do objeto, embora o método pede para o usuário escrever esse nome
      * @param ic_cliente O objeto que liga o cliente ao controlador
+     * @throws RemoteException 
      */
-    public static void Cliente_Armazena(String nome, InterfaceControlador ic_cliente){
+    public static void Cliente_Armazena(String nome, InterfaceControlador ic_cliente) throws RemoteException{
         Scanner sc = new Scanner(System.in);
         System.out.println("Digite o nome do objeto:");
 		nome=sc.next();
@@ -144,8 +152,12 @@ public class Client
 		}
 		catch (RemoteException e)
 		{
-			System.out.println("RemoteException");
-			e.printStackTrace();
+			String tmp[] = busca.split("/");
+			System.out.println("RemoteException, reporting fail to Controller!");
+			//e.printStackTrace();
+			
+			String service = tmp[tmp.length - 1];
+			ic_cliente.reportFail(service);
 			return;
 		}
 		catch (NenhumServidorDisponivelException e)
@@ -178,7 +190,7 @@ public class Client
 		/**Just a Scanner*/
     	Scanner sc = new Scanner(System.in);
     	/**Strings to keep important information and used for data manipulations*/
-    	String busca, tmp;
+    	String tmp;
         /** This array is necessary so we can split the tuple {object_id, server, service} */
         String[] busca_split;
         
