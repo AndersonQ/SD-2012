@@ -374,6 +374,8 @@ public class Controller extends UnicastRemoteObject
 		    throw new NenhumServidorDisponivelException();
 		}
 		
+		nextserver = nextserver%vServers.size();
+		
 		//DEBUG
 		System.out.printf("Round-Robin selected the server with ID = %d\n", vServers.get(nextserver));
 		/*Finally, it returns the server that was found*/
